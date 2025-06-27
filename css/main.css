@@ -1,0 +1,241 @@
+/* Cosmos Pet Care App - Main Stylesheet */
+
+:root {
+  --primary-color: #0079d3;
+  --secondary-color: #1a1a1b;
+  --tertiary-color: #ff4500;
+  --bg-color: #f6f7f8;
+  --card-color: #ffffff;
+  --text-color: #1c1c1c;
+  --light-text: #787c7e;
+  --border-color: #edeff1;
+  --success-color: #46d160;
+  --danger-color: #ff585b;
+  --warning-color: #ffb000;
+}
+
+body {
+  font-family: 'Noto Sans', 'Helvetica Neue', Arial, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+/* Navbar styling */
+.navbar {
+  background-color: var(--card-color);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+.nav-link {
+  color: var(--text-color);
+  font-weight: 500;
+}
+
+.nav-link:hover, .nav-link.active {
+  color: var(--primary-color);
+}
+
+/* Card styling */
+.card {
+  border-radius: 4px;
+  border: 1px solid var(--border-color);
+  margin-bottom: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.card-header {
+  background-color: var(--card-color);
+  border-bottom: 1px solid var(--border-color);
+  font-weight: 500;
+}
+
+.card-body {
+  padding: 16px;
+}
+
+/* Button styling */
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+  background-color: #005fa3;
+  border-color: #005fa3;
+}
+
+.btn-outline-primary {
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.btn-tertiary {
+  background-color: var(--tertiary-color);
+  border-color: var(--tertiary-color);
+  color: white;
+}
+
+.btn-tertiary:hover {
+  background-color: #e03d00;
+  border-color: #e03d00;
+  color: white;
+}
+
+/* Form styling */
+.form-control:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.2rem rgba(0, 121, 211, 0.25);
+}
+
+/* Role selection styling */
+.role-card {
+  cursor: pointer;
+  transition: all 0.2s ease;
+  height: 100%;
+}
+
+.role-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.role-card.selected {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 1px var(--primary-color);
+}
+
+.role-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  color: var(--primary-color);
+}
+
+/* Badge styling */
+.badge-pending {
+  background-color: var(--warning-color);
+  color: white;
+}
+
+.badge-completed {
+  background-color: var(--success-color);
+  color: white;
+}
+
+.badge-cancelled {
+  background-color: var(--danger-color);
+  color: white;
+}
+
+.badge-confirmed {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+/* Pet card styling */
+.pet-card {
+  transition: transform 0.3s ease;
+}
+
+.pet-card:hover {
+  transform: translateY(-5px);
+}
+
+.pet-image {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+/* Appointment styling */
+.appointment-card {
+  transition: all 0.2s ease;
+}
+
+.appointment-card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Dashboard styling */
+.dashboard-stat {
+  display: flex;
+  align-items: center;
+  padding: 1.5rem;
+}
+
+.dashboard-stat-icon {
+  font-size: 2.5rem;
+  margin-right: 1rem;
+  color: var(--primary-color);
+}
+
+.dashboard-stat-value {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.dashboard-stat-label {
+  color: var(--light-text);
+}
+
+/* Sidebar styling */
+.sidebar {
+  background-color: var(--card-color);
+  min-height: calc(100vh - 56px);
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
+}
+
+.sidebar .nav-link {
+  color: var(--text-color);
+  padding: 0.75rem 1.25rem;
+  border-radius: 4px;
+  margin-bottom: 0.25rem;
+}
+
+.sidebar .nav-link:hover, .sidebar .nav-link.active {
+  background-color: rgba(0, 121, 211, 0.1);
+  color: var(--primary-color);
+}
+
+.sidebar .nav-link i {
+  margin-right: 0.5rem;
+  width: 20px;
+  text-align: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .sidebar {
+    min-height: auto;
+    margin-bottom: 1rem;
+  }
+}
+
+/* Loading spinner */
+.loading-spinner {
+  display: inline-block;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 3px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top-color: var(--primary-color);
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

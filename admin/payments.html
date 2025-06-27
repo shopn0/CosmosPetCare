@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Management - Cosmos Pet Care</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- DataTables CSS -->
+    <link href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../css/main.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="dashboard.html">
+                <i class="fas fa-paw me-2"></i>Cosmos Pet Care
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="dashboard.html">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="users.html">Users</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="payments.html">Payments</a>
+                    </li>
+                </ul>
+                <div class="dropdown">
+                    <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-user-shield me-1"></i> <span class="user-name">Admin</span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="profile.html">Profile</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item logout-btn" href="#">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container py-4">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-lg-3 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="text-center mb-3">
+                            <div class="mb-3">
+                                <i class="fas fa-user-shield" style="font-size: 5rem; color: var(--primary-color);"></i>
+                            </div>
+                            <h5 class="user-name">Admin Name</h5>
+                            <p class="text-muted mb-0">Administrator</p>
+                        </div>
+                        <hr>
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link" href="dashboard.html">
+                                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="users.html">
+                                    <i class="fas fa-users"></i> Users
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" href="payments.html">
+                                    <i class="fas fa-credit-card"></i> Payments
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="profile.html">
+                                    <i class="fas fa-user-cog"></i> Profile
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link logout-btn" href="#">
+                                    <i class="fas fa-sign-out-alt"></i> Logout
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="col-lg-9">
+                <div class="alert-container"></div>
+                
+                <!-- Payments List View -->
+                <div id="payments-view">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h3 class="mb-0">Payment Management</h3>
+                        <div>
+                            <button class="btn btn-outline-primary me-2" id="refresh-payments-btn">
+                                <i class="fas fa-sync-alt me-1"></i> Refresh
+                            </button>
+                            <button class="btn btn-primary" id="export-payments-btn">
+                                <i class="fas fa-file-export me-1"></i> Export
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">Payments Overview</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <div class="card bg-light">
+                                        <div class="card-body text-center">
+                                            <h6 class="text-muted">Total Revenue</h6>
+                                            <h3 id="total-revenue" class="mb-0">$0.00</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <div class="card bg-light">
+                                        <div class="card-body text-center">
+                                            <h6 class="text-muted">Completed Payments</h6>
+                                            <h3 id="completed-payments" class="mb-0">0</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <div class="card bg-light">
+                                        <div class="card-body text-center">
+                                            <h6 class="text-muted">Pending Payments</h6>
+                                            <h3 id="pending-payments" class="mb-0">0</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header bg-white">
+                            <ul class="nav nav-tabs card-header-tabs" id="paymentTabs" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab">All Payments</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="completed-tab" data-bs-toggle="tab" data-bs-target="#completed" type="button" role="tab">Completed</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="pending-tab" data-bs-toggle="tab" data-bs-target="#pending" type="button" role="tab">Pending</button>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card-body">
+                            <div class="tab-content" id="paymentTabContent">
+                                <!-- All Payments Tab -->
+                                <div class="tab-pane fade show active" id="all" role="tabpanel">
+                                    <div class="table-responsive">
+                                        <table id="all-payments-table" class="table table-hover table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Customer</th>
+                                                    <th>Service</th>
+                                                    <th>Amount</th>
+                                                    <th>Date</th>
+                                                    <th>Status</th>
+                                                    <th>Method</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="all-payments">
+                                                <tr>
+                                                    <td colspan="8" class="text-center py-3">
+                                                        <div class="loading-spinner"></div>
+                                                        <p class="mt-2 mb-0">Loading payments...</p>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                
+                                <!-- Completed Payments Tab -->
+                                <div class="tab-pane fade" id="completed" role="tabpanel">
+                                    <div class="table-responsive">
+                                        <table id="completed-payments-table" class="table table-hover table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Customer</th>
+                                                    <th>Service</th>
+                                                    <th>Amount</th>
+                                                    <th>Date</th>
+                                                    <th>Method</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="completed-payments-list">
+                                                <tr>
+                                                    <td colspan="7" class="text-center py-3">
+                                                        <div class="loading-spinner"></div>
+                                                        <p class="mt-2 mb-0">Loading payments...</p>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                
+                                <!-- Pending Payments Tab -->
+                                <div class="tab-pane fade" id="pending" role="tabpanel">
+                                    <div class="table-responsive">
+                                        <table id="pending-payments-table" class="table table-hover table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Customer</th>
+                                                    <th>Service</th>
+                                                    <th>Amount</th>
+                                                    <th>Date</th>
+                                                    <th>Status</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="pending-payments-list">
+                                                <tr>
+                                                    <td colspan="7" class="text-center py-3">
+                                                        <div class="loading-spinner"></div>
+                                                        <p class="mt-2 mb-0">Loading payments...</p>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Payment Details Modal -->
+                <div class="modal fade" id="paymentDetailsModal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Payment Details</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <h5>Payment Information</h5>
+                                        <div class="row mb-2">
+                                            <div class="col-sm-4">
+                                                <p class="mb-0 text-muted">Payment ID</p>
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <p id="detail-id" class="mb-0 fw-bold">#12345</p>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-2">
+                                            <div class="col-sm-4">
+                                                <p class="mb-0 text-muted">Amount</p>
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <p id="detail-amount" class="mb-0">$150.00</p>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-2">
+                                            <div class="col-sm-4">
+                                                <p class="mb-0 text-muted">Date</p>
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <p id="detail-date" class="mb-0">April 30, 2025</p>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-2">
+                                            <div class="col-sm-4">
+                                                <p class="mb-0 text-muted">Status</p>
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <span id="detail-status" class="badge badge-completed">Completed</span>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-2">
+                                            <div class="col-sm-4">
+                                                <p class="mb-0 text-muted">Method</p>
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <p id="detail-method" class="mb-0">Credit Card</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <h5>Customer Information</h5>
+                                        <div class="row mb-2">
+                                            <div class="col-sm-4">
+                                                <p class="mb-0 text-muted">Name</p>
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <p id="detail-customer-name" class="mb-0">John Doe</p>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-2">
+                                            <div class="col-sm-4">
+                                                <p class="mb-0 text-muted">Email</p>
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <p id="detail-customer-email" class="mb-0">john.doe@example.com</p>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-2">
+                                            <div class="col-sm-4">
+                                                <p class="mb-0 text-muted">Phone</p>
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <p id="detail-customer-phone" class="mb-0">+1 123-456-7890</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h5>Service Details</h5>
+                                        <div class="card bg-light">
+                                            <div class="card-body">
+                                                <div class="row mb-2">
+                                                    <div class="col-sm-3">
+                                                        <p class="mb-0 text-muted">Service Type</p>
+                                                    </div>
+                                                    <div class="col-sm-9">
+                                                        <p id="detail-service-type" class="mb-0">Veterinary Consultation</p>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-sm-3">
+                                                        <p class="mb-0 text-muted">Pet</p>
+                                                    </div>
+                                                    <div class="col-sm-9">
+                                                        <p id="detail-pet-name" class="mb-0">Max (Golden Retriever)</p>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-3">
+                                                        <p class="mb-0 text-muted">Description</p>
+                                                    </div>
+                                                    <div class="col-sm-9">
+                                                        <p id="detail-description" class="mb-0">Regular check-up and vaccination</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-primary me-2" id="print-receipt-btn">
+                                    <i class="fas fa-print me-1"></i> Print Receipt
+                                </button>
+                                <button type="button" class="btn btn-primary" id="mark-completed-btn">
+                                    <i class="fas fa-check-circle me-1"></i> Mark as Completed
+                                </button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-4 border-top">
+        <div class="container text-center">
+            <p class="mb-0">&copy; 2025 Cosmos Pet Care</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+    <!-- Custom JS -->
+    <script src="../js/main.js"></script>
+    <script>
+        let allPayments = [];
+        let currentPaymentId = null;
+        let dataTablesInitialized = false;
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is logged in and has admin role
+            if (!AUTH.isLoggedIn() || AUTH.getRole() !== 'admin') {
+                window.location.href = '../login.html';
+                return;
+            }
+            
+            // Update user name in UI
+            document.querySelectorAll('.user-name').forEach(el => {
+                el.textContent = AUTH.user.name;
+            });
+            
+            // Load payments data
+            loadPayments();
+            
+            // Event handlers
+            document.querySelector('.logout-btn').addEventListener('click', function(e) {
+                e.preventDefault();
+                AUTH.clearAuth();
+                window.location.href = '../login.html';
+            });
+            
+            // Refresh payments button
+            document.getElementById('refresh-payments-btn').addEventListener('click', function() {
+                loadPayments();
+            });
+            
+            // Export payments button
+            document.getElementById('export-payments-btn').addEventListener('click', function() {
+                exportPaymentsToCSV();
+            });
+            
+            // Tab change handlers
+            document.querySelectorAll('[data-bs-toggle="tab"]').forEach(tab => {
+                tab.addEventListener('shown.bs.tab', function(e) {
+                    // Adjust DataTables when tabs change (if initialized)
+                    if (dataTablesInitialized) {
+                        if (e.target.id === 'all-tab') {
+                            $('#all-payments-table').DataTable().columns.adjust();
+                        } else if (e.target.id === 'completed-tab') {
+                            $('#completed-payments-table').DataTable().columns.adjust();
+                        } else if (e.target.id === 'pending-tab') {
+                            $('#pending-payments-table').DataTable().columns.adjust();
+                        }
+                    }
+                });
+            });
+            
+            // Print receipt button
+            document.getElementById('print-receipt-btn').addEventListener('click', function() {
+                if (currentPaymentId) {
+                    printReceipt(currentPaymentId);
+                }
+            });
+            
+            // Mark as completed button
+            document.getElementById('mark-completed-btn').addEventListener('click', function() {
+                if (currentPaymentId) {
+                    markPaymentAsCompleted(currentPaymentId);
+                }
+            });
+        });
+        
+        async function loadPayments() {
+            try {
+                // Clear any cached data to ensure we get fresh data from the database
+                sessionStorage.removeItem('vetcare_admin_payments');
+
+                // Show loading state
+                document.getElementById('all-payments').innerHTML = 
+                    `<tr>
+                        <td colspan="8" class="text-center py-3">
+                            <div class="loading-spinner"></div>
+                            <p class="mt-2 mb-0">Loading payments from database...</p>
+                        </td>
+                    </tr>`;
+
+                const response = await fetch(`${API_BASE_URL}/payments_view.php`, {
+                    headers: {
+                        'Authorization': `Bearer ${AUTH.token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch payments');
+                }
+
+                const result = await response.json();
+
+                if (result.status === 'success' && result.data && result.data.payments && result.data.payments.length > 0) {
+                    allPayments = result.data.payments;
+                    console.log(`Retrieved ${allPayments.length} payments from database`);
+
+                    // Cache the payments
+                    sessionStorage.setItem('vetcare_admin_payments', JSON.stringify(allPayments));
+
+                    // Update summary statistics
+                    updatePaymentsSummary(allPayments);
+
+                    // Display payments in appropriate tabs
+                    displayPayments();
+                } else {
+                    console.warn('No payment records found in database or API error');
+                    const noPaymentsMessage = 
+                        `<tr>
+                            <td colspan="8" class="text-center py-3">No payment records found in the database.</td>
+                        </tr>`;
+
+                    document.getElementById('all-payments').innerHTML = noPaymentsMessage;
+
+                    // Update summary statistics with zeros
+                    document.getElementById('total-revenue').textContent = '$0.00';
+                    document.getElementById('completed-payments').textContent = '0';
+                    document.getElementById('pending-payments').textContent = '0';
+                }
+            } catch (error) {
+                console.error('Error loading payments from database:', error);
+                const errorMessage = 
+                    `<tr>
+                        <td colspan="8" class="text-center py-3">Error connecting to the database. Please try again later.</td>
+                    </tr>`;
+
+                document.getElementById('all-payments').innerHTML = errorMessage;
+            }
+        }
+        
+        function updatePaymentsSummary(payments) {
+            // Calculate total revenue from completed payments
+            const completedPayments = payments.filter(p => p.status === 'completed');
+            const pendingPayments = payments.filter(p => p.status === 'pending');
+            
+            const totalRevenue = completedPayments.reduce((total, payment) => total + parseFloat(payment.amount), 0);
+            
+            // Format currency
+            const formattedRevenue = new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD'
+            }).format(totalRevenue);
+            
+            // Update UI
+            document.getElementById('total-revenue').textContent = formattedRevenue;
+            document.getElementById('completed-payments').textContent = completedPayments.length;
+            document.getElementById('pending-payments').textContent = pendingPayments.length;
+        }
+        
+        function displayPayments() {
+            if (!allPayments || allPayments.length === 0) {
+                return; // Already handled in loadPayments
+            }
+            
+            // Destroy existing DataTables if initialized
+            if (dataTablesInitialized) {
+                $('#all-payments-table').DataTable().destroy();
+                $('#completed-payments-table').DataTable().destroy();
+                $('#pending-payments-table').DataTable().destroy();
+                dataTablesInitialized = false;
+            }
+            
+            // Filter payments
+            const completedPayments = allPayments.filter(p => p.status === 'completed');
+            const pendingPayments = allPayments.filter(p => p.status === 'pending');
+            
+            // Prepare HTML for all payments
+            let allPaymentsHtml = '';
+            allPayments.forEach(payment => {
+                // Format amount
+                const formattedAmount = new Intl.NumberFormat('en-US', {
+                    style: 'currency',
+                    currency: 'USD'
+                }).format(payment.amount);
+                
+                // Format date
+                const paymentDate = new Date(payment.payment_date);
+                const formattedDate = paymentDate.toLocaleDateString();
+                
+                // Status badge
+                const statusClass = payment.status === 'completed' ? 'badge-completed' : 'badge-pending';
+                
+                allPaymentsHtml += `
+                <tr>
+                    <td>#${payment.id}</td>
+                    <td>${payment.owner_name}</td>
+                    <td>${payment.service_type}</td>
+                    <td>${formattedAmount}</td>
+                    <td>${formattedDate}</td>
+                    <td><span class="badge ${statusClass}">${payment.status}</span></td>
+                    <td>${payment.method}</td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary view-payment" data-id="${payment.id}">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </td>
+                </tr>`;
+            });
+            document.getElementById('all-payments').innerHTML = allPaymentsHtml;
+            
+            // Prepare HTML for completed payments
+            let completedPaymentsHtml = '';
+            completedPayments.forEach(payment => {
+                // Format amount
+                const formattedAmount = new Intl.NumberFormat('en-US', {
+                    style: 'currency',
+                    currency: 'USD'
+                }).format(payment.amount);
+                
+                // Format date
+                const paymentDate = new Date(payment.payment_date);
+                const formattedDate = paymentDate.toLocaleDateString();
+                
+                completedPaymentsHtml += `
+                <tr>
+                    <td>#${payment.id}</td>
+                    <td>${payment.owner_name}</td>
+                    <td>${payment.service_type}</td>
+                    <td>${formattedAmount}</td>
+                    <td>${formattedDate}</td>
+                    <td>${payment.method}</td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary view-payment" data-id="${payment.id}">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </td>
+                </tr>`;
+            });
+            if (completedPayments.length === 0) {
+                completedPaymentsHtml = `
+                <tr>
+                    <td colspan="7" class="text-center py-3">No completed payments found.</td>
+                </tr>`;
+            }
+            document.getElementById('completed-payments-list').innerHTML = completedPaymentsHtml;
+            
+            // Prepare HTML for pending payments
+            let pendingPaymentsHtml = '';
+            pendingPayments.forEach(payment => {
+                // Format amount
+                const formattedAmount = new Intl.NumberFormat('en-US', {
+                    style: 'currency',
+                    currency: 'USD'
+                }).format(payment.amount);
+                
+                // Format date
+                const paymentDate = new Date(payment.payment_date);
+                const formattedDate = paymentDate.toLocaleDateString();
+                
+                // Status badge
+                const statusClass = 'badge-pending';
+                
+                pendingPaymentsHtml += `
+                <tr>
+                    <td>#${payment.id}</td>
+                    <td>${payment.owner_name}</td>
+                    <td>${payment.service_type}</td>
+                    <td>${formattedAmount}</td>
+                    <td>${formattedDate}</td>
+                    <td><span class="badge ${statusClass}">${payment.status}</span></td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary view-payment me-1" data-id="${payment.id}">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-success complete-payment" data-id="${payment.id}">
+                            <i class="fas fa-check"></i>
+                        </button>
+                    </td>
+                </tr>`;
+            });
+            if (pendingPayments.length === 0) {
+                pendingPaymentsHtml = `
+                <tr>
+                    <td colspan="7" class="text-center py-3">No pending payments found.</td>
+                </tr>`;
+            }
+            document.getElementById('pending-payments-list').innerHTML = pendingPaymentsHtml;
+            
+            // Add event listeners to buttons
+            document.querySelectorAll('.view-payment').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const paymentId = this.getAttribute('data-id');
+                    showPaymentDetails(paymentId);
+                });
+            });
+            
+            document.querySelectorAll('.complete-payment').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const paymentId = this.getAttribute('data-id');
+                    markPaymentAsCompleted(paymentId);
+                });
+            });
+            
+            // Initialize DataTables
+            $('#all-payments-table').DataTable({
+                order: [[0, 'desc']], // Sort by ID descending by default
+                pageLength: 10,
+                lengthMenu: [5, 10, 25, 50],
+                responsive: true
+            });
+            
+            $('#completed-payments-table').DataTable({
+                order: [[0, 'desc']], // Sort by ID descending by default
+                pageLength: 10,
+                lengthMenu: [5, 10, 25, 50],
+                responsive: true
+            });
+            
+            $('#pending-payments-table').DataTable({
+                order: [[0, 'desc']], // Sort by ID descending by default
+                pageLength: 10,
+                lengthMenu: [5, 10, 25, 50],
+                responsive: true
+            });
+            
+            dataTablesInitialized = true;
+        }
+        
+        function showPaymentDetails(paymentId) {
+            const payment = allPayments.find(p => p.id == paymentId);
+            
+            if (!payment) {
+                UTILS.showAlert('Payment not found', 'danger');
+                return;
+            }
+            
+            currentPaymentId = payment.id;
+            
+            // Format amount
+            const formattedAmount = new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD'
+            }).format(payment.amount);
+            
+            // Format date
+            const paymentDate = new Date(payment.payment_date);
+            const formattedDate = paymentDate.toLocaleDateString();
+            
+            // Status badge
+            const statusClass = payment.status === 'completed' ? 'badge-completed' : 'badge-pending';
+            
+            // Populate modal with payment details
+            document.getElementById('detail-id').textContent = `#${payment.id}`;
+            document.getElementById('detail-amount').textContent = formattedAmount;
+            document.getElementById('detail-date').textContent = formattedDate;
+            
+            const statusElement = document.getElementById('detail-status');
+            statusElement.className = `badge ${statusClass}`;
+            statusElement.textContent = payment.status;
+            
+            document.getElementById('detail-method').textContent = payment.method;
+            
+            // Customer details
+            document.getElementById('detail-customer-name').textContent = payment.owner_name;
+            document.getElementById('detail-customer-email').textContent = payment.owner_email || 'N/A';
+            document.getElementById('detail-customer-phone').textContent = payment.owner_phone || 'N/A';
+            
+            // Service details
+            document.getElementById('detail-service-type').textContent = payment.service_type || 'Veterinary Service';
+            document.getElementById('detail-pet-name').textContent = payment.pet_name ? `${payment.pet_name} (${payment.pet_type || 'Pet'})` : 'N/A';
+            document.getElementById('detail-description').textContent = payment.description || 'No description provided';
+            
+            // Show/hide "Mark as Completed" button based on payment status
+            if (payment.status === 'pending') {
+                document.getElementById('mark-completed-btn').classList.remove('d-none');
+            } else {
+                document.getElementById('mark-completed-btn').classList.add('d-none');
+            }
+            
+            // Show modal
+            new bootstrap.Modal(document.getElementById('paymentDetailsModal')).show();
+        }
+        
+        async function markPaymentAsCompleted(paymentId) {
+            try {
+                // Show loading state if updating from modal
+                const markCompletedBtn = document.getElementById('mark-completed-btn');
+                if (!markCompletedBtn.classList.contains('d-none')) {
+                    const originalBtnText = markCompletedBtn.innerHTML;
+                    markCompletedBtn.innerHTML = '<span class="loading-spinner"></span> Processing...';
+                    markCompletedBtn.disabled = true;
+                }
+                
+                // Submit status update
+                const response = await fetch(`${API_BASE_URL}/payments_update.php`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${AUTH.token}`
+                    },
+                    body: JSON.stringify({
+                        payment_id: paymentId,
+                        status: 'completed'
+                    })
+                });
+                
+                const result = await response.json();
+                
+                // Reset button if updating from modal
+                if (!markCompletedBtn.classList.contains('d-none')) {
+                    markCompletedBtn.innerHTML = '<i class="fas fa-check-circle me-1"></i> Mark as Completed';
+                    markCompletedBtn.disabled = false;
+                }
+                
+                if (result.status === 'success') {
+                    // Show success message
+                    UTILS.showAlert('Payment marked as completed successfully!', 'success');
+                    
+                    // Close modal if open
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('paymentDetailsModal'));
+                    if (modal) {
+                        modal.hide();
+                    }
+                    
+                    // Reload payments
+                    loadPayments();
+                } else {
+                    // Show error message
+                    UTILS.showAlert(result.message || 'Failed to update payment status', 'danger');
+                }
+            } catch (error) {
+                console.error('Error updating payment status:', error);
+                UTILS.showAlert('Error updating payment status. Please try again.', 'danger');
+                
+                // Reset button if updating from modal
+                const markCompletedBtn = document.getElementById('mark-completed-btn');
+                if (!markCompletedBtn.classList.contains('d-none')) {
+                    markCompletedBtn.innerHTML = '<i class="fas fa-check-circle me-1"></i> Mark as Completed';
+                    markCompletedBtn.disabled = false;
+                }
+            }
+        }
+        
+        function printReceipt(paymentId) {
+            const payment = allPayments.find(p => p.id == paymentId);
+            
+            if (!payment) {
+                UTILS.showAlert('Payment not found', 'danger');
+                return;
+            }
+            
+            // Format amount
+            const formattedAmount = new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD'
+            }).format(payment.amount);
+            
+            // Format date
+            const paymentDate = new Date(payment.payment_date);
+            const formattedDate = paymentDate.toLocaleDateString();
+            
+            // Create receipt content
+            const receiptContent = `
+            <html>
+            <head>
+                <title>Receipt #${payment.id}</title>
+                <style>
+                    body {
+                        font-family: Arial, sans-serif;
+                        margin: 0;
+                        padding: 20px;
+                        color: #333;
+                    }
+                    .receipt {
+                        max-width: 800px;
+                        margin: 0 auto;
+                        border: 1px solid #ddd;
+                        padding: 20px;
+                    }
+                    .header {
+                        text-align: center;
+                        margin-bottom: 20px;
+                    }
+                    .details {
+                        margin-bottom: 20px;
+                    }
+                    .row {
+                        display: flex;
+                        margin-bottom: 10px;
+                    }
+                    .label {
+                        font-weight: bold;
+                        width: 200px;
+                    }
+                    .value {
+                        flex: 1;
+                    }
+                    .divider {
+                        border-top: 1px solid #ddd;
+                        margin: 20px 0;
+                    }
+                    .footer {
+                        text-align: center;
+                        margin-top: 30px;
+                        font-size: 14px;
+                    }
+                    .amount {
+                        font-size: 18px;
+                        font-weight: bold;
+                    }
+                    .completed {
+                        color: green;
+                        font-weight: bold;
+                    }
+                    .pending {
+                        color: orange;
+                        font-weight: bold;
+                    }
+                    @media print {
+                        body {
+                            padding: 0;
+                        }
+                        .receipt {
+                            border: none;
+                        }
+                        .no-print {
+                            display: none;
+                        }
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="receipt">
+                    <div class="header">
+                        <h1>Cosmos Pet Care</h1>
+                        <p>123 Pet Street, Dhaka, Bangladesh</p>
+                        <p>Phone: +880 1234-567890 | Email: info@vetcare.com</p>
+                        <h2>Payment Receipt</h2>
+                    </div>
+                    
+                    <div class="details">
+                        <div class="row">
+                            <div class="label">Receipt #:</div>
+                            <div class="value">${payment.id}</div>
+                        </div>
+                        <div class="row">
+                            <div class="label">Date:</div>
+                            <div class="value">${formattedDate}</div>
+                        </div>
+                        <div class="row">
+                            <div class="label">Status:</div>
+                            <div class="value ${payment.status === 'completed' ? 'completed' : 'pending'}">${payment.status.toUpperCase()}</div>
+                        </div>
+                        <div class="row">
+                            <div class="label">Payment Method:</div>
+                            <div class="value">${payment.method}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="divider"></div>
+                    
+                    <div class="details">
+                        <h3>Customer Information</h3>
+                        <div class="row">
+                            <div class="label">Name:</div>
+                            <div class="value">${payment.owner_name}</div>
+                        </div>
+                        <div class="row">
+                            <div class="label">Email:</div>
+                            <div class="value">${payment.owner_email || 'N/A'}</div>
+                        </div>
+                        <div class="row">
+                            <div class="label">Phone:</div>
+                            <div class="value">${payment.owner_phone || 'N/A'}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="divider"></div>
+                    
+                    <div class="details">
+                        <h3>Service Details</h3>
+                        <div class="row">
+                            <div class="label">Service:</div>
+                            <div class="value">${payment.service_type || 'Veterinary Service'}</div>
+                        </div>
+                        <div class="row">
+                            <div class="label">Pet:</div>
+                            <div class="value">${payment.pet_name ? `${payment.pet_name} (${payment.pet_type || 'Pet'})` : 'N/A'}</div>
+                        </div>
+                        <div class="row">
+                            <div class="label">Description:</div>
+                            <div class="value">${payment.description || 'No description provided'}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="divider"></div>
+                    
+                    <div class="details">
+                        <div class="row">
+                            <div class="label">Total Amount:</div>
+                            <div class="value amount">${formattedAmount}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="footer">
+                        <p>Thank you for choosing Cosmos Pet Care Pet Clinic!</p>
+                        <p>This receipt was generated on ${new Date().toLocaleString()}</p>
+                    </div>
+                    
+                    <div class="no-print" style="margin-top: 30px; text-align: center;">
+                        <button onclick="window.print();" style="padding: 10px 20px; background: #4CAF50; color: white; border: none; cursor: pointer; font-size: 16px;">
+                            Print Receipt
+                        </button>
+                        <button onclick="window.close();" style="padding: 10px 20px; background: #f44336; color: white; border: none; cursor: pointer; font-size: 16px; margin-left: 10px;">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </body>
+            </html>`;
+            
+            // Open receipt in new window
+            const receiptWindow = window.open('', '_blank');
+            receiptWindow.document.write(receiptContent);
+            receiptWindow.document.close();
+        }
+        
+        function exportPaymentsToCSV() {
+            if (!allPayments || allPayments.length === 0) {
+                UTILS.showAlert('No payments available to export', 'warning');
+                return;
+            }
+            
+            // Prepare CSV content
+            let csvContent = 'ID,Customer,Email,Phone,Service,Pet,Amount,Date,Status,Method\n';
+            
+            allPayments.forEach(payment => {
+                // Format data for CSV
+                const paymentDate = new Date(payment.payment_date);
+                const formattedDate = paymentDate.toLocaleDateString();
+                
+                // Escape commas in text fields
+                const escapeComma = (text) => {
+                    if (!text) return '';
+                    return `"${text.replace(/"/g, '""')}"`;
+                };
+                
+                csvContent += `${payment.id},`
+                            + `${escapeComma(payment.owner_name)},`
+                            + `${escapeComma(payment.owner_email || 'N/A')},`
+                            + `${escapeComma(payment.owner_phone || 'N/A')},`
+                            + `${escapeComma(payment.service_type || 'Veterinary Service')},`
+                            + `${escapeComma(payment.pet_name || 'N/A')},`
+                            + `${payment.amount},`
+                            + `${formattedDate},`
+                            + `${payment.status},`
+                            + `${escapeComma(payment.method)}\n`;
+            });
+            
+            // Create download link
+            const encodedUri = encodeURI('data:text/csv;charset=utf-8,' + csvContent);
+            const link = document.createElement('a');
+            link.setAttribute('href', encodedUri);
+            link.setAttribute('download', `payments-export-${new Date().toISOString().split('T')[0]}.csv`);
+            document.body.appendChild(link);
+            
+            // Trigger download
+            link.click();
+            
+            // Clean up
+            document.body.removeChild(link);
+            
+            // Show success message
+            UTILS.showAlert('Payments exported successfully', 'success');
+        }
+    </script>
+    <script>
+        // This script will help initialize API variables required for payments.html to work properly
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add API base URL if it's not defined in main.js
+            if (typeof API_BASE_URL === 'undefined') {
+                window.API_BASE_URL = '../php/api';
+                console.log("API_BASE_URL set to:", API_BASE_URL);
+            }
+            
+            // Define AUTH namespace if not already defined in main.js
+            if (typeof AUTH === 'undefined') {
+                window.AUTH = {
+                    token: localStorage.getItem('token'),
+                    user: JSON.parse(localStorage.getItem('user') || '{}'),
+                    isLoggedIn: function() {
+                        return !!this.token;
+                    },
+                    getRole: function() {
+                        return this.user?.role || '';
+                    },
+                    clearAuth: function() {
+                        localStorage.removeItem('token');
+                        localStorage.removeItem('user');
+                        this.token = null;
+                        this.user = {};
+                    }
+                };
+                console.log("AUTH object initialized");
+            }
+            
+            // Define UTILS namespace if not already defined in main.js
+            if (typeof UTILS === 'undefined') {
+                window.UTILS = {
+                    showAlert: function(message, type = 'info') {
+                        const alertContainer = document.querySelector('.alert-container');
+                        if (!alertContainer) return;
+                        
+                        const alertId = 'alert-' + Date.now();
+                        const alertHTML = `
+                            <div id="${alertId}" class="alert alert-${type} alert-dismissible fade show" role="alert">
+                                ${message}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        `;
+                        
+                        alertContainer.innerHTML = alertHTML + alertContainer.innerHTML;
+                        
+                        // Auto-dismiss after 5 seconds
+                        setTimeout(() => {
+                            const alert = document.getElementById(alertId);
+                            if (alert) {
+                                const bsAlert = new bootstrap.Alert(alert);
+                                bsAlert.close();
+                            }
+                        }, 5000);
+                    }
+                };
+                console.log("UTILS object initialized");
+            }
+            
+            // Test API connection with logging
+            console.log("Checking API connectivity for payments page...");
+            if (AUTH.isLoggedIn()) {
+                console.log("User is logged in with role:", AUTH.getRole());
+            } else {
+                console.log("User is not logged in, will redirect to login page");
+            }
+        });
+    </script>
+</body>
+</html>

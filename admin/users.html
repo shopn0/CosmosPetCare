@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Users - Cosmos Pet Care</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../css/main.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="dashboard.html">
+                <i class="fas fa-paw me-2"></i>Cosmos Pet Care
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="dashboard.html">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="users.html">Users</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="payments.html">Payments</a>
+                    </li>
+                </ul>
+                <div class="dropdown">
+                    <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-user-shield me-1"></i> <span class="user-name">Admin</span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="profile.html">Profile</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item logout-btn" href="#">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container py-4">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-lg-3 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="text-center mb-3">
+                            <div class="mb-3">
+                                <i class="fas fa-user-shield" style="font-size: 5rem; color: var(--primary-color);"></i>
+                            </div>
+                            <h5 class="user-name">Admin Name</h5>
+                            <p class="text-muted mb-0">Administrator</p>
+                        </div>
+                        <hr>
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link" href="dashboard.html">
+                                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" href="users.html">
+                                    <i class="fas fa-users"></i> Users
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="payments.html">
+                                    <i class="fas fa-credit-card"></i> Payments
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="profile.html">
+                                    <i class="fas fa-user-cog"></i> Profile
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link logout-btn" href="#">
+                                    <i class="fas fa-sign-out-alt"></i> Logout
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="col-lg-9">
+                <div class="alert-container"></div>
+                
+                <!-- Users List View -->
+                <div id="users-list-view">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h3 class="mb-0">Manage Users</h3>
+                        <button class="btn btn-primary" id="add-user-btn">
+                            <i class="fas fa-plus-circle me-1"></i> Add New User
+                        </button>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header bg-white">
+                            <ul class="nav nav-tabs card-header-tabs" id="userTabs" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab">All Users</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="customers-tab" data-bs-toggle="tab" data-bs-target="#customers" type="button" role="tab">Customers</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="vets-tab" data-bs-toggle="tab" data-bs-target="#vets" type="button" role="tab">Veterinarians</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="admins-tab" data-bs-toggle="tab" data-bs-target="#admins" type="button" role="tab">Administrators</button>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="tab-content" id="userTabContent">
+                                <!-- All Users Tab -->
+                                <div class="tab-pane fade show active" id="all" role="tabpanel">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>Email</th>
+                                                    <th>Role</th>
+                                                    <th>Phone</th>
+                                                    <th>Registered</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="all-users">
+                                                <tr>
+                                                    <td colspan="6" class="text-center py-3">
+                                                        <div class="loading-spinner"></div>
+                                                        <p class="mt-2 mb-0">Loading users...</p>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                
+                                <!-- Customers Tab -->
+                                <div class="tab-pane fade" id="customers" role="tabpanel">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>Email</th>
+                                                    <th>Phone</th>
+                                                    <th>Registered</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="customer-users">
+                                                <tr>
+                                                    <td colspan="5" class="text-center py-3">
+                                                        <div class="loading-spinner"></div>
+                                                        <p class="mt-2 mb-0">Loading users...</p>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                
+                                <!-- Vets Tab -->
+                                <div class="tab-pane fade" id="vets" role="tabpanel">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>Email</th>
+                                                    <th>Phone</th>
+                                                    <th>Registered</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="vet-users">
+                                                <tr>
+                                                    <td colspan="5" class="text-center py-3">
+                                                        <div class="loading-spinner"></div>
+                                                        <p class="mt-2 mb-0">Loading users...</p>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                
+                                <!-- Admins Tab -->
+                                <div class="tab-pane fade" id="admins" role="tabpanel">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>Email</th>
+                                                    <th>Phone</th>
+                                                    <th>Registered</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="admin-users">
+                                                <tr>
+                                                    <td colspan="5" class="text-center py-3">
+                                                        <div class="loading-spinner"></div>
+                                                        <p class="mt-2 mb-0">Loading users...</p>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- User Details View -->
+                <div id="user-details-view" class="d-none">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h3 class="mb-0">User Details</h3>
+                        <button class="btn btn-outline-primary" id="back-from-details">
+                            <i class="fas fa-arrow-left me-1"></i> Back to Users
+                        </button>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6 mb-4">
+                                    <h5>User Information</h5>
+                                    <div class="row mb-3">
+                                        <div class="col-sm-4">
+                                            <p class="mb-0 text-muted">Name</p>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <p id="detail-name" class="mb-0 fw-bold">John Doe</p>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-sm-4">
+                                            <p class="mb-0 text-muted">Email</p>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <p id="detail-email" class="mb-0">john.doe@example.com</p>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-sm-4">
+                                            <p class="mb-0 text-muted">Role</p>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <p id="detail-role" class="mb-0">Customer</p>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-sm-4">
+                                            <p class="mb-0 text-muted">Phone</p>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <p id="detail-phone" class="mb-0">+1 123-456-7890</p>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-sm-4">
+                                            <p class="mb-0 text-muted">Registered</p>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <p id="detail-created" class="mb-0">January 15, 2025</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <h5>Address</h5>
+                                    <div class="card">
+                                        <div class="card-body bg-light">
+                                            <p id="detail-address" class="mb-0">123 Main St, Anytown, State 12345</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 text-end">
+                                    <button class="btn btn-outline-primary me-2" id="edit-user-btn">
+                                        <i class="fas fa-edit me-1"></i> Edit
+                                    </button>
+                                    <button class="btn btn-outline-danger" id="delete-user-btn">
+                                        <i class="fas fa-trash-alt me-1"></i> Delete
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit User Modal -->
+    <div class="modal fade" id="userModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="userModalTitle">Add New User</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="user-form">
+                        <input type="hidden" id="user-id">
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="name-input" class="form-label">Full Name</label>
+                                <input type="text" class="form-control" id="name-input" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="email-input" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email-input" required>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="password-input" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="password-input">
+                                <div class="form-text" id="password-help">Leave empty to keep current password.</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="role-input" class="form-label">Role</label>
+                                <select class="form-select" id="role-input" required>
+                                    <option value="customer">Customer</option>
+                                    <option value="vet">Veterinarian</option>
+                                    <option value="admin">Administrator</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="phone-input" class="form-label">Phone</label>
+                                <input type="tel" class="form-control" id="phone-input" required>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="address-input" class="form-label">Address</label>
+                            <textarea class="form-control" id="address-input" rows="3" required></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="save-user-btn">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirm Delete</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete the user <span id="delete-user-name" class="fw-bold"></span>?</p>
+                    <p class="text-danger">This action cannot be undone.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="confirm-delete-btn">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-4 border-top">
+        <div class="container text-center">
+            <p class="mb-0">&copy; 2025 Cosmos Pet Care</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Custom JS -->
+    <script src="../js/main.js"></script>
+    <script>
+        let allUsers = [];
+        let currentUserId = null;
+        let isEditMode = false;
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is logged in and has admin role
+            if (!AUTH.isLoggedIn() || AUTH.getRole() !== 'admin') {
+                window.location.href = '../login.html';
+                return;
+            }
+            
+            // Update user name in UI
+            document.querySelectorAll('.user-name').forEach(el => {
+                el.textContent = AUTH.user.name;
+            });
+            
+            // Check URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            if (urlParams.get('id')) {
+                // Show user details
+                loadUserDetails(urlParams.get('id'));
+            } else {
+                // Load users list
+                loadUsers();
+            }
+            
+            // Event handlers
+            document.querySelector('.logout-btn').addEventListener('click', function(e) {
+                e.preventDefault();
+                AUTH.clearAuth();
+                window.location.href = '../login.html';
+            });
+            
+            // Tab change handlers
+            document.querySelectorAll('[data-bs-toggle="tab"]').forEach(tab => {
+                tab.addEventListener('shown.bs.tab', function(e) {
+                    if (e.target.id === 'all-tab') {
+                        displayUsers('all');
+                    } else if (e.target.id === 'customers-tab') {
+                        displayUsers('customer');
+                    } else if (e.target.id === 'vets-tab') {
+                        displayUsers('vet');
+                    } else if (e.target.id === 'admins-tab') {
+                        displayUsers('admin');
+                    }
+                });
+            });
+            
+            // Add user button
+            document.getElementById('add-user-btn').addEventListener('click', function() {
+                showAddUserModal();
+            });
+            
+            // Save user button
+            document.getElementById('save-user-btn').addEventListener('click', saveUser);
+            
+            // Back button
+            document.getElementById('back-from-details').addEventListener('click', showUsersListView);
+            
+            // Edit user button
+            document.getElementById('edit-user-btn').addEventListener('click', function() {
+                if (currentUserId) {
+                    showEditUserModal(currentUserId);
+                }
+            });
+            
+            // Delete user button
+            document.getElementById('delete-user-btn').addEventListener('click', function() {
+                if (currentUserId) {
+                    showDeleteConfirmation(currentUserId);
+                }
+            });
+            
+            // Confirm delete button
+            document.getElementById('confirm-delete-btn').addEventListener('click', deleteUser);
+        });
+        
+        async function loadUsers() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/users_manage.php`, {
+                    headers: {
+                        'Authorization': `Bearer ${AUTH.token}`
+                    }
+                });
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    allUsers = result.data.users;
+                    
+                    // Display in appropriate tabs
+                    displayUsers('all');
+                    // Other tabs will be loaded when clicked
+                } else {
+                    const noUsersMessage = 
+                        `<tr>
+                            <td colspan="6" class="text-center py-3">
+                                <p class="mb-0">No users found.</p>
+                            </td>
+                        </tr>`;
+                    
+                    document.getElementById('all-users').innerHTML = noUsersMessage;
+                    document.getElementById('customer-users').innerHTML = noUsersMessage;
+                    document.getElementById('vet-users').innerHTML = noUsersMessage;
+                    document.getElementById('admin-users').innerHTML = noUsersMessage;
+                }
+            } catch (error) {
+                console.error('Error loading users:', error);
+                UTILS.showAlert('Error loading users. Please try again.', 'danger');
+            }
+        }
+        
+        function displayUsers(type) {
+            if (!allUsers || allUsers.length === 0) {
+                return; // Already handled in loadUsers
+            }
+            
+            let users;
+            let targetElement;
+            let columns = 6; // Default for 'all' view
+            
+            if (type === 'all') {
+                users = allUsers;
+                targetElement = 'all-users';
+                columns = 6;
+            } else {
+                users = allUsers.filter(user => user.role === type);
+                targetElement = `${type}-users`;
+                columns = 5;
+            }
+            
+            if (users.length === 0) {
+                document.getElementById(targetElement).innerHTML = 
+                    `<tr>
+                        <td colspan="${columns}" class="text-center py-3">
+                            <p class="mb-0">No ${type === 'all' ? '' : type} users found.</p>
+                        </td>
+                    </tr>`;
+                return;
+            }
+            
+            let usersHtml = '';
+            
+            users.forEach(user => {
+                // Capitalize role for display
+                const roleDisplay = user.role.charAt(0).toUpperCase() + user.role.slice(1);
+                
+                // Format date
+                const createdDate = new Date(user.created_at);
+                const formattedDate = createdDate.toLocaleDateString();
+                
+                // For 'all' tab, include role column
+                if (type === 'all') {
+                    usersHtml += `
+                    <tr>
+                        <td>${user.name}</td>
+                        <td>${user.email}</td>
+                        <td>${roleDisplay}</td>
+                        <td>${user.phone}</td>
+                        <td>${formattedDate}</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary view-btn me-1" data-id="${user.id}">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-primary edit-btn me-1" data-id="${user.id}">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger delete-btn" data-id="${user.id}">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </td>
+                    </tr>`;
+                } else {
+                    // For role-specific tabs, exclude role column
+                    usersHtml += `
+                    <tr>
+                        <td>${user.name}</td>
+                        <td>${user.email}</td>
+                        <td>${user.phone}</td>
+                        <td>${formattedDate}</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary view-btn me-1" data-id="${user.id}">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-primary edit-btn me-1" data-id="${user.id}">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger delete-btn" data-id="${user.id}">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </td>
+                    </tr>`;
+                }
+            });
+            
+            document.getElementById(targetElement).innerHTML = usersHtml;
+            
+            // Add event listeners to buttons
+            document.querySelectorAll('.view-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const userId = this.getAttribute('data-id');
+                    window.location.href = `users.html?id=${userId}`;
+                });
+            });
+            
+            document.querySelectorAll('.edit-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const userId = this.getAttribute('data-id');
+                    showEditUserModal(userId);
+                });
+            });
+            
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const userId = this.getAttribute('data-id');
+                    showDeleteConfirmation(userId);
+                });
+            });
+        }
+        
+        async function loadUserDetails(userId) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/users_manage.php?id=${userId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${AUTH.token}`
+                    }
+                });
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    const user = result.data.user;
+                    currentUserId = user.id;
+                    
+                    // Update user details in UI
+                    document.getElementById('detail-name').textContent = user.name;
+                    document.getElementById('detail-email').textContent = user.email;
+                    
+                    // Capitalize role for display
+                    const roleDisplay = user.role.charAt(0).toUpperCase() + user.role.slice(1);
+                    document.getElementById('detail-role').textContent = roleDisplay;
+                    
+                    document.getElementById('detail-phone').textContent = user.phone;
+                    
+                    // Format date
+                    const createdDate = new Date(user.created_at);
+                    const formattedDate = createdDate.toLocaleDateString();
+                    document.getElementById('detail-created').textContent = formattedDate;
+                    
+                    document.getElementById('detail-address').textContent = user.address || 'No address provided';
+                    
+                    // Don't allow admins to delete themselves
+                    if (user.id === AUTH.user.id) {
+                        document.getElementById('delete-user-btn').disabled = true;
+                        document.getElementById('delete-user-btn').title = 'You cannot delete your own account';
+                    } else {
+                        document.getElementById('delete-user-btn').disabled = false;
+                        document.getElementById('delete-user-btn').title = '';
+                    }
+                    
+                    // Show user details view
+                    showUserDetailsView();
+                } else {
+                    UTILS.showAlert('User not found', 'danger');
+                    showUsersListView(); // Fallback to list view
+                }
+            } catch (error) {
+                console.error('Error loading user details:', error);
+                UTILS.showAlert('Error loading user details. Please try again.', 'danger');
+            }
+        }
+        
+        function showUsersListView() {
+            document.getElementById('users-list-view').classList.remove('d-none');
+            document.getElementById('user-details-view').classList.add('d-none');
+            
+            // Update URL without reloading page
+            history.pushState({}, '', 'users.html');
+            
+            // Reload users in case there were changes
+            loadUsers();
+        }
+        
+        function showUserDetailsView() {
+            document.getElementById('users-list-view').classList.add('d-none');
+            document.getElementById('user-details-view').classList.remove('d-none');
+        }
+        
+        function showAddUserModal() {
+            isEditMode = false;
+            
+            // Reset form
+            document.getElementById('user-form').reset();
+            document.getElementById('user-id').value = '';
+            
+            // Update modal title
+            document.getElementById('userModalTitle').textContent = 'Add New User';
+            
+            // Show password field as required
+            document.getElementById('password-input').required = true;
+            document.getElementById('password-help').classList.add('d-none');
+            
+            // Show modal
+            new bootstrap.Modal(document.getElementById('userModal')).show();
+        }
+        
+        function showEditUserModal(userId) {
+            isEditMode = true;
+            
+            // Find user in allUsers array
+            const user = allUsers.find(u => u.id == userId);
+            
+            if (!user) {
+                UTILS.showAlert('User not found', 'danger');
+                return;
+            }
+            
+            // Populate form
+            document.getElementById('user-id').value = user.id;
+            document.getElementById('name-input').value = user.name;
+            document.getElementById('email-input').value = user.email;
+            document.getElementById('password-input').value = '';
+            document.getElementById('role-input').value = user.role;
+            document.getElementById('phone-input').value = user.phone;
+            document.getElementById('address-input').value = user.address || '';
+            
+            // Update modal title
+            document.getElementById('userModalTitle').textContent = 'Edit User';
+            
+            // Password not required in edit mode
+            document.getElementById('password-input').required = false;
+            document.getElementById('password-help').classList.remove('d-none');
+            
+            // Show modal
+            new bootstrap.Modal(document.getElementById('userModal')).show();
+        }
+        
+        function showDeleteConfirmation(userId) {
+            // Find user in allUsers array
+            const user = allUsers.find(u => u.id == userId);
+            
+            if (!user) {
+                UTILS.showAlert('User not found', 'danger');
+                return;
+            }
+            
+            // Don't allow admins to delete themselves
+            if (user.id === AUTH.user.id) {
+                UTILS.showAlert('You cannot delete your own account', 'danger');
+                return;
+            }
+            
+            // Set user ID and name
+            currentUserId = user.id;
+            document.getElementById('delete-user-name').textContent = user.name;
+            
+            // Show modal
+            new bootstrap.Modal(document.getElementById('deleteModal')).show();
+        }
+        
+        async function saveUser() {
+            // Get form data
+            const userId = document.getElementById('user-id').value;
+            const userData = {
+                name: document.getElementById('name-input').value,
+                email: document.getElementById('email-input').value,
+                role: document.getElementById('role-input').value,
+                phone: document.getElementById('phone-input').value,
+                address: document.getElementById('address-input').value
+            };
+            
+            // Add password if provided
+            const password = document.getElementById('password-input').value;
+            if (password) {
+                userData.password = password;
+            }
+            
+            // Add ID if in edit mode
+            if (isEditMode) {
+                userData.id = userId;
+            }
+            
+            // Validate required fields
+            if (!userData.name || !userData.email || !userData.role || !userData.phone) {
+                UTILS.showAlert('Please fill in all required fields', 'danger', '#userModal .modal-body');
+                return;
+            }
+            
+            // Validate email format
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(userData.email)) {
+                UTILS.showAlert('Please enter a valid email address', 'danger', '#userModal .modal-body');
+                return;
+            }
+            
+            // Password is required for new users
+            if (!isEditMode && !userData.password) {
+                UTILS.showAlert('Password is required for new users', 'danger', '#userModal .modal-body');
+                return;
+            }
+            
+            try {
+                // Show loading state
+                const saveBtn = document.getElementById('save-user-btn');
+                const originalBtnText = saveBtn.innerHTML;
+                saveBtn.innerHTML = '<span class="loading-spinner"></span> Saving...';
+                saveBtn.disabled = true;
+                
+                // Submit user data
+                const method = isEditMode ? 'PUT' : 'POST';
+                const response = await fetch(`${API_BASE_URL}/users_manage.php`, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${AUTH.token}`
+                    },
+                    body: JSON.stringify(userData)
+                });
+                
+                const result = await response.json();
+                
+                // Reset button
+                saveBtn.innerHTML = originalBtnText;
+                saveBtn.disabled = false;
+                
+                if (result.status === 'success') {
+                    // Show success message
+                    UTILS.showAlert(`User ${isEditMode ? 'updated' : 'created'} successfully!`, 'success');
+                    
+                    // Hide modal
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('userModal'));
+                    modal.hide();
+                    
+                    // Reload users or user details
+                    if (currentUserId && document.getElementById('user-details-view').classList.contains('d-none') === false) {
+                        loadUserDetails(currentUserId);
+                    } else {
+                        loadUsers();
+                    }
+                } else {
+                    // Show error message
+                    UTILS.showAlert(result.message || `Failed to ${isEditMode ? 'update' : 'create'} user`, 'danger', '#userModal .modal-body');
+                }
+            } catch (error) {
+                console.error('Error saving user:', error);
+                UTILS.showAlert(`Error ${isEditMode ? 'updating' : 'creating'} user. Please try again.`, 'danger', '#userModal .modal-body');
+                
+                // Reset button
+                const saveBtn = document.getElementById('save-user-btn');
+                saveBtn.innerHTML = 'Save';
+                saveBtn.disabled = false;
+            }
+        }
+        
+        async function deleteUser() {
+            if (!currentUserId) {
+                return;
+            }
+            
+            try {
+                // Show loading state
+                const deleteBtn = document.getElementById('confirm-delete-btn');
+                const originalBtnText = deleteBtn.innerHTML;
+                deleteBtn.innerHTML = '<span class="loading-spinner"></span> Deleting...';
+                deleteBtn.disabled = true;
+                
+                // Delete user
+                const response = await fetch(`${API_BASE_URL}/users_manage.php?id=${currentUserId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${AUTH.token}`
+                    }
+                });
+                
+                const result = await response.json();
+                
+                // Reset button
+                deleteBtn.innerHTML = originalBtnText;
+                deleteBtn.disabled = false;
+                
+                // Hide modal
+                const modal = bootstrap.Modal.getInstance(document.getElementById('deleteModal'));
+                modal.hide();
+                
+                if (result.status === 'success') {
+                    // Show success message
+                    UTILS.showAlert('User deleted successfully!', 'success');
+                    
+                    // Return to users list view
+                    showUsersListView();
+                } else {
+                    // Show error message
+                    UTILS.showAlert(result.message || 'Failed to delete user', 'danger');
+                }
+            } catch (error) {
+                console.error('Error deleting user:', error);
+                UTILS.showAlert('Error deleting user. Please try again.', 'danger');
+                
+                // Reset button
+                const deleteBtn = document.getElementById('confirm-delete-btn');
+                deleteBtn.innerHTML = 'Delete';
+                deleteBtn.disabled = false;
+                
+                // Hide modal
+                const modal = bootstrap.Modal.getInstance(document.getElementById('deleteModal'));
+                modal.hide();
+            }
+        }
+    </script>
+</body>
+</html>

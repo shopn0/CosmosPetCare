@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payments - Cosmos Pet Care</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../css/main.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="dashboard.html">
+                <i class="fas fa-paw me-2"></i>Cosmos Pet Care
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="dashboard.html">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="pets.html">My Pets</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="appointments.html">Appointments</a>
+                    </li>
+                </ul>
+                <div class="dropdown">
+                    <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-user me-1"></i> <span class="user-name">User</span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="profile.html">Profile</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item logout-btn" href="#">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container py-4">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-lg-3 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="text-center mb-3">
+                            <div class="mb-3">
+                                <i class="fas fa-user-circle" style="font-size: 5rem; color: var(--primary-color);"></i>
+                            </div>
+                            <h5 class="user-name">User Name</h5>
+                            <p class="text-muted mb-0">Pet Owner</p>
+                        </div>
+                        <hr>
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link" href="dashboard.html">
+                                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="pets.html">
+                                    <i class="fas fa-paw"></i> My Pets
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="appointments.html">
+                                    <i class="fas fa-calendar-check"></i> Appointments
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" href="payments.html">
+                                    <i class="fas fa-credit-card"></i> Payments
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="profile.html">
+                                    <i class="fas fa-user-cog"></i> Profile
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link logout-btn" href="#">
+                                    <i class="fas fa-sign-out-alt"></i> Logout
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="col-lg-9">
+                <div class="alert-container"></div>
+                
+                <!-- Payment History View -->
+                <div id="payment-history-view">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h3 class="mb-0">Payment History</h3>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header bg-white">
+                            <ul class="nav nav-tabs card-header-tabs" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" id="pending-tab" data-bs-toggle="tab" data-bs-target="#pending" type="button" role="tab">Pending</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="completed-tab" data-bs-toggle="tab" data-bs-target="#completed" type="button" role="tab">Completed</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="all-payments-tab" data-bs-toggle="tab" data-bs-target="#all-payments" type="button" role="tab">All</button>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="tab-content">
+                                <!-- Pending Payments Tab -->
+                                <div class="tab-pane fade show active" id="pending" role="tabpanel">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Invoice #</th>
+                                                    <th>Date</th>
+                                                    <th>Description</th>
+                                                    <th>Amount</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="pending-payments">
+                                                <tr>
+                                                    <td colspan="5" class="text-center py-3">
+                                                        <div class="loading-spinner"></div>
+                                                        <p class="mt-2 mb-0">Loading payments...</p>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                
+                                <!-- Completed Payments Tab -->
+                                <div class="tab-pane fade" id="completed" role="tabpanel">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Invoice #</th>
+                                                    <th>Date</th>
+                                                    <th>Description</th>
+                                                    <th>Amount</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="completed-payments">
+                                                <tr>
+                                                    <td colspan="5" class="text-center py-3">
+                                                        <div class="loading-spinner"></div>
+                                                        <p class="mt-2 mb-0">Loading payments...</p>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                
+                                <!-- All Payments Tab -->
+                                <div class="tab-pane fade" id="all-payments" role="tabpanel">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Invoice #</th>
+                                                    <th>Date</th>
+                                                    <th>Description</th>
+                                                    <th>Amount</th>
+                                                    <th>Status</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="all-payments-list">
+                                                <tr>
+                                                    <td colspan="6" class="text-center py-3">
+                                                        <div class="loading-spinner"></div>
+                                                        <p class="mt-2 mb-0">Loading payments...</p>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Payment Detail View -->
+                <div id="payment-detail-view" class="d-none">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h3 class="mb-0">Payment Details</h3>
+                        <button class="btn btn-outline-primary" id="back-to-payments">
+                            <i class="fas fa-arrow-left me-1"></i> Back to Payments
+                        </button>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <h5>Invoice Information</h5>
+                                    <div class="row mb-2">
+                                        <div class="col-sm-5">
+                                            <p class="mb-0 text-muted">Invoice Number:</p>
+                                        </div>
+                                        <div class="col-sm-7">
+                                            <p id="invoice-number" class="mb-0 fw-bold">INV-2025-0001</p>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-sm-5">
+                                            <p class="mb-0 text-muted">Date:</p>
+                                        </div>
+                                        <div class="col-sm-7">
+                                            <p id="invoice-date" class="mb-0">April 30, 2025</p>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-sm-5">
+                                            <p class="mb-0 text-muted">Status:</p>
+                                        </div>
+                                        <div class="col-sm-7">
+                                            <span id="invoice-status" class="badge badge-pending">Pending</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <h5>Appointment Details</h5>
+                                    <div class="row mb-2">
+                                        <div class="col-sm-5">
+                                            <p class="mb-0 text-muted">Pet:</p>
+                                        </div>
+                                        <div class="col-sm-7">
+                                            <p id="pet-name" class="mb-0">Max</p>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-sm-5">
+                                            <p class="mb-0 text-muted">Appointment:</p>
+                                        </div>
+                                        <div class="col-sm-7">
+                                            <p id="appointment-date" class="mb-0">April 30, 2025</p>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-sm-5">
+                                            <p class="mb-0 text-muted">Veterinarian:</p>
+                                        </div>
+                                        <div class="col-sm-7">
+                                            <p id="vet-name" class="mb-0">Dr. Sarah Johnson</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <h5>Invoice Items</h5>
+                            <div class="table-responsive mb-4">
+                                <table class="table table-bordered">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Description</th>
+                                            <th class="text-end">Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="invoice-items">
+                                        <tr>
+                                            <td>Consultation Fee</td>
+                                            <td class="text-end">$50.00</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Vaccination</td>
+                                            <td class="text-end">$35.00</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Medication</td>
+                                            <td class="text-end">$25.00</td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr class="fw-bold">
+                                            <td>Total</td>
+                                            <td id="invoice-total" class="text-end">$110.00</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                            
+                            <div id="payment-section" class="mt-4">
+                                <div id="payment-pending-section">
+                                    <h5>Payment Method</h5>
+                                    <div class="card mb-4">
+                                        <div class="card-body bg-light">
+                                            <form id="payment-form">
+                                                <div class="row g-3">
+                                                    <div class="col-md-6">
+                                                        <label for="card-name" class="form-label">Name on Card</label>
+                                                        <input type="text" class="form-control" id="card-name" placeholder="John Doe" required>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label for="card-number" class="form-label">Card Number</label>
+                                                        <input type="text" class="form-control" id="card-number" placeholder="XXXX XXXX XXXX XXXX" required>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label for="expiry-date" class="form-label">Expiry Date</label>
+                                                        <input type="text" class="form-control" id="expiry-date" placeholder="MM/YY" required>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label for="cvv" class="form-label">CVV</label>
+                                                        <input type="text" class="form-control" id="cvv" placeholder="123" required>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label for="zip-code" class="form-label">Zip Code</label>
+                                                        <input type="text" class="form-control" id="zip-code" placeholder="12345" required>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <div class="d-grid gap-2">
+                                                            <button type="submit" class="btn btn-primary" id="submit-payment-btn">
+                                                                <i class="fas fa-credit-card me-1"></i> Pay <span id="payment-amount">$110.00</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="text-center mt-2">
+                                                            <small class="text-muted">
+                                                                <i class="fas fa-lock me-1"></i> Your payment information is secure and encrypted
+                                                            </small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div id="payment-completed-section" class="d-none">
+                                    <div class="card bg-light">
+                                        <div class="card-body text-center">
+                                            <i class="fas fa-check-circle text-success" style="font-size: 4rem;"></i>
+                                            <h4 class="mt-3">Payment Completed</h4>
+                                            <p class="mb-0">Payment was completed on <span id="payment-date">April 30, 2025</span></p>
+                                            <p>Transaction ID: <span id="transaction-id">TRX-12345678</span></p>
+                                            <a href="#" class="btn btn-primary mt-3" id="view-receipt-btn">
+                                                <i class="fas fa-file-alt me-1"></i> View Receipt
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Payment Receipt View -->
+                <div id="payment-receipt-view" class="d-none">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h3 class="mb-0">Payment Receipt</h3>
+                        <div>
+                            <button class="btn btn-outline-secondary me-2" id="print-receipt-btn">
+                                <i class="fas fa-print me-1"></i> Print
+                            </button>
+                            <button class="btn btn-outline-primary" id="back-from-receipt">
+                                <i class="fas fa-arrow-left me-1"></i> Back
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-body" id="receipt-content">
+                            <!-- Updated Address -->
+                            <div class="text-center mb-4">
+                                <h4 class="mb-1"><i class="fas fa-paw me-2"></i>Cosmos Pet Care</h4>
+                                <p class="mb-0">123 Pet Street, Dhaka, Bangladesh</p>
+                                <p class="mb-0">Phone: +880 1234-567890 | Email: info@vetcare.com</p>
+                            </div>
+                            
+                            <div class="text-center mb-4">
+                                <h2 class="mb-0">RECEIPT</h2>
+                            </div>
+                            
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <h5>Receipt Information</h5>
+                                    <div class="row mb-2">
+                                        <div class="col-sm-5">
+                                            <p class="mb-0 text-muted">Receipt Number:</p>
+                                        </div>
+                                        <div class="col-sm-7">
+                                            <p id="receipt-number" class="mb-0 fw-bold">REC-2025-0001</p>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-sm-5">
+                                            <p class="mb-0 text-muted">Date:</p>
+                                        </div>
+                                        <div class="col-sm-7">
+                                            <p id="receipt-date" class="mb-0">April 30, 2025</p>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-sm-5">
+                                            <p class="mb-0 text-muted">Transaction ID:</p>
+                                        </div>
+                                        <div class="col-sm-7">
+                                            <p id="receipt-transaction-id" class="mb-0">TRX-12345678</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <h5>Customer Information</h5>
+                                    <div class="row mb-2">
+                                        <div class="col-sm-5">
+                                            <p class="mb-0 text-muted">Name:</p>
+                                        </div>
+                                        <div class="col-sm-7">
+                                            <p id="customer-name" class="mb-0">John Doe</p>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-sm-5">
+                                            <p class="mb-0 text-muted">Email:</p>
+                                        </div>
+                                        <div class="col-sm-7">
+                                            <p id="customer-email" class="mb-0">john.doe@example.com</p>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-sm-5">
+                                            <p class="mb-0 text-muted">Pet:</p>
+                                        </div>
+                                        <div class="col-sm-7">
+                                            <p id="receipt-pet-name" class="mb-0">Max</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <h5>Payment Details</h5>
+                            <div class="table-responsive mb-4">
+                                <table class="table table-bordered">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Description</th>
+                                            <th class="text-end">Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="receipt-items">
+                                        <tr>
+                                            <td>Consultation Fee</td>
+                                            <td class="text-end">$50.00</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Vaccination</td>
+                                            <td class="text-end">$35.00</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Medication</td>
+                                            <td class="text-end">$25.00</td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr class="fw-bold">
+                                            <td>Total</td>
+                                            <td id="receipt-total" class="text-end">$110.00</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h5>Payment Method</h5>
+                                    <p id="payment-method" class="mb-0">Credit Card (ending in 1234)</p>
+                                </div>
+                                <div class="col-md-6 text-md-end">
+                                    <h5>Payment Status</h5>
+                                    <span id="receipt-status" class="badge badge-completed">Paid</span>
+                                </div>
+                            </div>
+                            
+                            <div class="text-center mt-5">
+                                <p class="mb-0">Thank you for choosing Cosmos Pet Care for your pet's healthcare needs!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Success Modal -->
+    <div class="modal fade" id="paymentSuccessModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Payment Successful</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <i class="fas fa-check-circle text-success" style="font-size: 5rem;"></i>
+                    <h4 class="mt-3">Payment Completed Successfully!</h4>
+                    <p class="mb-0">Your payment of <span id="success-payment-amount">$110.00</span> has been processed.</p>
+                    <p>Transaction ID: <span id="success-transaction-id">TRX-12345678</span></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="view-receipt-modal-btn">View Receipt</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-4 border-top">
+        <div class="container text-center">
+            <p class="mb-0">&copy; 2025 Cosmos Pet Care</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Custom JS -->
+    <script src="../js/main.js"></script>
+    <script>
+        let allPayments = [];
+        let currentPaymentId = null;
+        
+        // At the start of the script - add a flag to suppress errors after payment processing
+        let suppressErrorsOnRefresh = false;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if we're coming back from a payment process
+            if (sessionStorage.getItem('payment_just_processed')) {
+                // Clear the flag but suppress errors for this page load
+                sessionStorage.removeItem('payment_just_processed');
+                suppressErrorsOnRefresh = true;
+            }
+            
+            // Check if user is logged in and has customer role
+            if (!AUTH.isLoggedIn() || AUTH.getRole() !== 'customer') {
+                window.location.href = '../login.html';
+                return;
+            }
+            
+            // Update user name in UI
+            document.querySelectorAll('.user-name').forEach(el => {
+                el.textContent = AUTH.user.name;
+            });
+            
+            // Check URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            if (urlParams.get('id')) {
+                // Show payment details
+                loadPaymentDetails(urlParams.get('id'));
+            } else if (urlParams.get('appointment')) {
+                // Create new payment for the appointment
+                createNewPayment(urlParams.get('appointment'));
+            } else if (urlParams.get('receipt')) {
+                // Show receipt
+                loadReceipt(urlParams.get('receipt'));
+            } else {
+                // Load payment history
+                loadPayments();
+            }
+            
+            // Event handlers
+            document.querySelector('.logout-btn').addEventListener('click', function(e) {
+                e.preventDefault();
+                AUTH.clearAuth();
+                window.location.href = '../login.html';
+            });
+            
+            // Tab change handlers
+            document.querySelectorAll('[data-bs-toggle="tab"]').forEach(tab => {
+                tab.addEventListener('shown.bs.tab', function(e) {
+                    if (e.target.id === 'pending-tab') {
+                        displayPayments('pending');
+                    } else if (e.target.id === 'completed-tab') {
+                        displayPayments('completed');
+                    } else if (e.target.id === 'all-payments-tab') {
+                        displayPayments('all');
+                    }
+                });
+            });
+            
+            // Navigation handlers
+            document.getElementById('back-to-payments').addEventListener('click', showPaymentHistoryView);
+            document.getElementById('back-from-receipt').addEventListener('click', function() {
+                // Go back to appropriate view
+                if (currentPaymentId) {
+                    loadPaymentDetails(currentPaymentId);
+                } else {
+                    showPaymentHistoryView();
+                }
+            });
+            
+            // Payment form handler
+            document.getElementById('payment-form').addEventListener('submit', processPayment);
+            
+            // Receipt actions
+            document.getElementById('view-receipt-btn').addEventListener('click', function(e) {
+                e.preventDefault();
+                if (currentPaymentId) {
+                    loadReceipt(currentPaymentId);
+                }
+            });
+            
+            document.getElementById('view-receipt-modal-btn').addEventListener('click', function() {
+                const modal = bootstrap.Modal.getInstance(document.getElementById('paymentSuccessModal'));
+                modal.hide();
+                if (currentPaymentId) {
+                    loadReceipt(currentPaymentId);
+                }
+            });
+            
+            document.getElementById('print-receipt-btn').addEventListener('click', printReceipt);
+        });
+        
+        async function loadPayments() {
+                // Clear any cached payments
+                sessionStorage.removeItem('vetcare_payments');
+                 try {
+                     const response = await fetch(`${API_BASE_URL}/payments_view.php`, {
+                         headers: { 'Authorization': `Bearer ${AUTH.token}` }
+                     });
+                     if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                     const result = await response.json();
+                     
+                     if (result.status === 'success' && result.data && result.data.payments && result.data.payments.length > 0) {
+                         allPayments = result.data.payments;
+                         // Cache the payments
+                         sessionStorage.setItem('vetcare_payments', JSON.stringify(allPayments));
+                         
+                         // Display in appropriate tabs
+                         displayPayments('pending');
+                         return true;
+                     } else {
+                         const noPaymentsMessage = 
+                             `<tr>
+                                 <td colspan="5" class="text-center py-3">
+                                     <p class="mb-0">No payments found in the database.</p>
+                                 </td>
+                             </tr>`;
+                         
+                         document.getElementById('pending-payments').innerHTML = noPaymentsMessage;
+                         document.getElementById('completed-payments').innerHTML = noPaymentsMessage;
+                         
+                         // All payments tab has an extra column
+                         document.getElementById('all-payments-list').innerHTML = 
+                             `<tr>
+                                 <td colspan="6" class="text-center py-3">
+                                     <p class="mb-0">No payments found in the database.</p>
+                                 </td>
+                             </tr>`;
+                         
+                         // Return false as no payments were found
+                         UTILS.showAlert('No payment records found in the database', 'warning');
+                         return false;
+                     }
+                 } catch (error) {
+                     console.error('Error loading payments:', error);
+                     UTILS.showAlert('Error connecting to the database. Please try again later.', 'danger');
+                     
+                     const noPaymentsMessage = 
+                         `<tr>
+                             <td colspan="5" class="text-center py-3">
+                                 <p class="mb-0">Could not connect to the payment database.</p>
+                             </td>
+                         </tr>`;
+                     
+                     document.getElementById('pending-payments').innerHTML = noPaymentsMessage;
+                     document.getElementById('completed-payments').innerHTML = noPaymentsMessage;
+                     document.getElementById('all-payments-list').innerHTML = 
+                         `<tr>
+                             <td colspan="6" class="text-center py-3">
+                                 <p class="mb-0">Could not connect to the payment database.</p>
+                             </td>
+                         </tr>`;
+                     
+                     return false;
+                 }
+             }
+        
+        // No demo data - directly load payments
+        
+        // Rest of existing functions remain the same
+        function displayPayments(type) {
+            if (!allPayments || allPayments.length === 0) {
+                return; // Already handled in loadPayments
+            }
+            
+            let payments;
+            let targetElement;
+            
+            if (type === 'pending') {
+                payments = allPayments.filter(payment => payment.status === 'pending');
+                targetElement = 'pending-payments';
+            } else if (type === 'completed') {
+                payments = allPayments.filter(payment => payment.status === 'completed');
+                targetElement = 'completed-payments';
+            } else {
+                payments = allPayments;
+                targetElement = 'all-payments-list';
+            }
+            
+            if (payments.length === 0) {
+                let colspan = type === 'all' ? 6 : 5;
+                document.getElementById(targetElement).innerHTML = 
+                    `<tr>
+                        <td colspan="${colspan}" class="text-center py-3">
+                            <p class="mb0">No ${type} payments found.</p>
+                        </td>
+                    </tr>`;
+                return;
+            }
+            
+            let paymentsHtml = '';
+            
+            payments.forEach(payment => {
+                // Format date
+                const paymentDate = new Date(payment.date);
+                const formattedDate = paymentDate.toLocaleDateString();
+                
+                // Format amount with proper currency symbol
+                const formattedAmount = `$${parseFloat(payment.amount).toFixed(2)}`;
+                
+                // Common columns
+                let html = `
+                <tr>
+                    <td>${payment.invoice_number}</td>
+                    <td>${formattedDate}</td>
+                    <td>${payment.description}</td>
+                    <td>${formattedAmount}</td>`;
+                
+                // Status column only for 'all' tab
+                if (type === 'all') {
+                    const statusClass = payment.status === 'pending' ? 'badge-pending' : 'badge-completed';
+                    const statusText = payment.status.charAt(0).toUpperCase() + payment.status.slice(1);
+                    html += `<td><span class="badge ${statusClass}">${statusText}</span></td>`;
+                }
+                
+                // Action column with different options based on payment status
+                html += `<td>`;
+                
+                // View button for all payments
+                html += `<a href="payments.html?id=${payment.id}" class="btn btn-sm btn-outline-primary me-1">View</a>`;
+                
+                // Pay now button for pending payments
+                if (payment.status === 'pending') {
+                    html += `<a href="payments.html?id=${payment.id}" class="btn btn-sm btn-success">Pay Now</a>`;
+                }
+                
+                // Receipt button for completed payments
+                if (payment.status === 'completed') {
+                    html += `<a href="payments.html?receipt=${payment.id}" class="btn btn-sm btn-outline-secondary">Receipt</a>`;
+                }
+                
+                html += `</td></tr>`;
+                
+                paymentsHtml += html;
+            });
+            
+            document.getElementById(targetElement).innerHTML = paymentsHtml;
+        }
+        
+        async function loadPaymentDetails(paymentId) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/payments_view.php?id=${paymentId}`, {
+                    headers: { 'Authorization': `Bearer ${AUTH.token}` }
+                });
+                if (!response.ok) throw new Error(`API request failed with status ${response.status}`);
+                const result = await response.json();
+                if (result.status !== 'success') throw new Error(result.message || 'Failed to load payment details');
+                const payment = result.data.payment;
+                currentPaymentId = payment.id;
+                
+                // Populate invoice fields
+                document.getElementById('invoice-number').textContent = payment.invoice_number;
+                document.getElementById('invoice-date').textContent = new Date(payment.date).toLocaleDateString();
+                const statusClass = payment.status === 'pending' ? 'badge-pending' : 'badge-completed';
+                document.getElementById('invoice-status').className = `badge ${statusClass}`;
+                document.getElementById('invoice-status').textContent = payment.status;
+                document.getElementById('pet-name').textContent = payment.pet_name;
+                document.getElementById('appointment-date').textContent = new Date(payment.appointment_date).toLocaleDateString();
+                document.getElementById('vet-name').textContent = payment.vet_name;
+                
+                // Render invoice items using payment.amount
+                const amount = parseFloat(payment.amount);
+                const description = payment.description || payment.service_type || 'Payment';
+                const itemsHtml = `<tr><td>${description}</td><td class="text-end">$${amount.toFixed(2)}</td></tr>`;
+                document.getElementById('invoice-items').innerHTML = itemsHtml;
+                document.getElementById('invoice-total').textContent = `$${amount.toFixed(2)}`;
+                document.getElementById('payment-amount').textContent = `$${amount.toFixed(2)}`;
+
+                // Show or hide payment form
+                if (payment.status === 'pending') {
+                    document.getElementById('payment-pending-section').classList.remove('d-none');
+                    document.getElementById('payment-completed-section').classList.add('d-none');
+                } else {
+                    document.getElementById('payment-pending-section').classList.add('d-none');
+                    document.getElementById('payment-completed-section').classList.remove('d-none');
+                    document.getElementById('payment-date').textContent = new Date(payment.payment_date || payment.date).toLocaleDateString();
+                    document.getElementById('transaction-id').textContent = payment.transaction_id;
+                }
+                
+                // Show details view
+                showPaymentDetailView();
+            } catch (error) {
+                console.error('Error loading payment details:', error);
+                UTILS.showAlert(error.message || 'Failed to load payment details', 'danger');
+                showPaymentHistoryView();
+            }
+        }
+        
+        async function createNewPayment(appointmentId) {
+            try {
+                // We need to use POST method as required by the API
+                const response = await fetch(`${API_BASE_URL}/payments_create.php`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${AUTH.token}`
+                    },
+                    body: JSON.stringify({
+                        appointment_id: appointmentId,
+                        amount: 1000, // Default amount, will be updated by the server based on the appointment
+                        method: 'card' // Default method, can be changed by user in the payment form
+                    })
+                });
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    // Redirect to the payment details page
+                    window.location.href = `payments.html?id=${result.data.payment_id}`;
+                } else {
+                    UTILS.showAlert(result.message || 'Failed to create payment', 'danger');
+                    showPaymentHistoryView(); // Fallback to list view
+                }
+            } catch (error) {
+                console.error('Error creating payment:', error);
+                UTILS.showAlert('Error creating payment. Please try again.', 'danger');
+            }
+        }
+        
+        async function processPayment(e) {
+            e.preventDefault();
+            
+            if (!currentPaymentId) {
+                UTILS.showAlert('No payment selected', 'danger');
+                return;
+            }
+            
+            // Get form data
+            const paymentData = {
+                payment_id: currentPaymentId,
+                card_name: document.getElementById('card-name').value,
+                card_number: document.getElementById('card-number').value,
+                expiry_date: document.getElementById('expiry-date').value,
+                cvv: document.getElementById('cvv').value,
+                zip_code: document.getElementById('zip-code').value
+            };
+            
+            // Validate form - very basic validation for demo
+            if (!paymentData.card_name || !paymentData.card_number || !paymentData.expiry_date || !paymentData.cvv || !paymentData.zip_code) {
+                UTILS.showAlert('Please fill in all payment fields', 'danger');
+                return;
+            }
+            
+            try {
+                // Show loading state
+                const submitBtn = document.getElementById('submit-payment-btn');
+                const originalBtnText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<span class="loading-spinner"></span> Processing...';
+                submitBtn.disabled = true;
+                
+                // Process payment - This is a dummy implementation
+                // In a real app, this would connect to a payment gateway
+                setTimeout(async () => {
+                    try {
+                        // Generate random transaction ID
+                        const transactionId = 'TRX-' + Math.random().toString(36).substr(2, 8).toUpperCase();
+                        
+                        // Submit payment data
+                        const response = await fetch(`${API_BASE_URL}/payments_update.php`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${AUTH.token}`
+                            },
+                            body: JSON.stringify({
+                                payment_id: currentPaymentId,
+                                status: 'completed',
+                                transaction_id: transactionId
+                            })
+                        });
+                        const result = await response.json();
+                        
+                        if (result.status === 'success') {
+                            // Store success info in sessionStorage for after refresh
+                            sessionStorage.setItem('payment_success', 'true');
+                            sessionStorage.setItem('payment_id', currentPaymentId);
+                            
+                            // Force refresh the page immediately
+                            window.location.href = `payments.html?id=${currentPaymentId}`;
+                            return;
+                        } else {
+                            // Automatically refresh the page even if there's an error
+                            window.location.href = `payments.html?id=${currentPaymentId}`;
+                        }
+                    } catch (error) {
+                        console.error('Error processing payment:', error);
+                        UTILS.showAlert('Error processing payment. Please try again.', 'danger');
+                        
+                        // Reset button
+                        submitBtn.innerHTML = originalBtnText;
+                        submitBtn.disabled = false;
+                    }
+                }, 2000); // Simulate processing delay
+                
+            } catch (error) {
+                console.error('Error processing payment:', error);
+                UTILS.showAlert('Error processing payment. Please try again.', 'danger');
+                
+                // Reset button
+                const submitBtn = document.getElementById('submit-payment-btn');
+                submitBtn.innerHTML = 'Pay <span id="payment-amount">$110.00</span>';
+                submitBtn.disabled = false;
+            }
+        }
+        
+        async function loadReceipt(paymentId) {
+            try {
+                // First check if it's a demo payment in our local array
+                const demoPayment = allPayments.find(p => p.id == paymentId);
+                
+                if (demoPayment) {
+                    // Only show receipt for completed payments
+                    if (demoPayment.status !== 'completed') {
+                        UTILS.showAlert('Receipt is only available for completed payments', 'warning');
+                        loadPaymentDetails(paymentId);
+                        return;
+                    }
+                    
+                    currentPaymentId = demoPayment.id;
+                    
+                    // Update receipt details in UI
+                    document.getElementById('receipt-number').textContent = 'REC-' + demoPayment.invoice_number.substring(4);
+                    
+                    // Format dates
+                    const paymentDate = new Date(demoPayment.payment_date);
+                    document.getElementById('receipt-date').textContent = paymentDate.toLocaleDateString();
+                    
+                    document.getElementById('receipt-transaction-id').textContent = demoPayment.transaction_id;
+                    
+                    // Customer information
+                    document.getElementById('customer-name').textContent = AUTH.user.name;
+                    document.getElementById('customer-email').textContent = AUTH.user.email;
+                    document.getElementById('receipt-pet-name').textContent = demoPayment.pet_name;
+                    
+                    // Receipt items - for demo payments, create some sample items
+                    const items = [
+                        { description: 'Consultation Fee', amount: Math.round(demoPayment.amount * 0.3) },
+                        { description: 'Medication', amount: Math.round(demoPayment.amount * 0.4) },
+                        { description: 'Laboratory Tests', amount: Math.round(demoPayment.amount * 0.3) }
+                    ];
+                    
+                    let itemsHtml = '';
+                    let total = 0;
+                    
+                    items.forEach(item => {
+                        const amount = parseFloat(item.amount);
+                        total += amount;
+                        itemsHtml += `
+                        <tr>
+                            <td>${item.description}</td>
+                            <td class="text-end">$${amount.toFixed(2)}</td>
+                        </tr>`;
+                    });
+                    
+                    document.getElementById('receipt-items').innerHTML = itemsHtml;
+                    document.getElementById('receipt-total').textContent = `$${total.toFixed(2)}`;
+                    
+                    // Payment method - this would be stored in a real app
+                    const lastFour = '1234'; // Dummy last four digits for demo
+                    document.getElementById('payment-method').textContent = `Credit Card (ending in ${lastFour})`;
+                    
+                    // Show receipt view
+                    showReceiptView();
+                    return;
+                }
+                
+                // If not a demo payment, try to load from API
+                const response = await fetch(`${API_BASE_URL}/payments_view.php?id=${paymentId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${AUTH.token}`
+                    }
+                });
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    const payment = result.data.payment;
+                    currentPaymentId = payment.id;
+                    
+                    // Only show receipt for completed payments
+                    if (payment.status !== 'completed') {
+                        UTILS.showAlert('Receipt is only available for completed payments', 'warning');
+                        loadPaymentDetails(paymentId);
+                        return;
+                    }
+                    
+                    // Update receipt details in UI
+                    document.getElementById('receipt-number').textContent = 'REC-' + payment.id;
+                    
+                    // Format dates - handle invalid dates gracefully
+                    let paymentDate;
+                    try {
+                        paymentDate = new Date(payment.payment_date || payment.date);
+                        if (isNaN(paymentDate)) throw new Error('Invalid date');
+                    } catch (e) {
+                        paymentDate = new Date(); // Use current date as fallback
+                    }
+                    document.getElementById('receipt-date').textContent = paymentDate.toLocaleDateString();
+                    
+                    document.getElementById('receipt-transaction-id').textContent = payment.transaction_id || 'N/A';
+                    
+                    // Customer information
+                    document.getElementById('customer-name').textContent = AUTH.user.name;
+                    document.getElementById('customer-email').textContent = AUTH.user.email;
+                    document.getElementById('receipt-pet-name').textContent = payment.pet_name || 'Your pet';
+                    
+                    // Create receipt items from single payment
+                    // Handle missing items array by using the payment amount directly
+                    const amount = parseFloat(payment.amount);
+                    const description = payment.description || payment.service_type || 'Veterinary service';
+                    const itemsHtml = `<tr><td>${description}</td><td class="text-end">$${amount.toFixed(2)}</td></tr>`;
+                    
+                    document.getElementById('receipt-items').innerHTML = itemsHtml;
+                    document.getElementById('receipt-total').textContent = `$${amount.toFixed(2)}`;
+                    
+                    // Payment method - this would be stored in a real app
+                    const lastFour = payment.card_number ? payment.card_number.slice(-4) : '1234';
+                    document.getElementById('payment-method').textContent = `Credit Card (ending in ${lastFour})`;
+                    
+                    // Show receipt view
+                    showReceiptView();
+                } else {
+                    UTILS.showAlert('Payment not found', 'danger');
+                    showPaymentHistoryView(); // Fallback to list view
+                }
+            } catch (error) {
+                console.error('Error loading receipt:', error);
+                UTILS.showAlert('Error loading receipt. Please try again.', 'danger');
+            }
+        }
+        
+        function showPaymentHistoryView() {
+            document.getElementById('payment-history-view').classList.remove('d-none');
+            document.getElementById('payment-detail-view').classList.add('d-none');
+            document.getElementById('payment-receipt-view').classList.add('d-none');
+            
+            // Update URL without reloading page
+            history.pushState({}, '', 'payments.html');
+            
+            // Reload payments in case there were changes
+            loadPayments();
+        }
+        
+        function showPaymentDetailView() {
+            document.getElementById('payment-history-view').classList.add('d-none');
+            document.getElementById('payment-detail-view').classList.remove('d-none');
+            document.getElementById('payment-receipt-view').classList.add('d-none');
+        }
+        
+        function showReceiptView() {
+            document.getElementById('payment-history-view').classList.add('d-none');
+            document.getElementById('payment-detail-view').classList.add('d-none');
+            document.getElementById('payment-receipt-view').classList.remove('d-none');
+        }
+        
+        function printReceipt() {
+            const printContent = document.getElementById('receipt-content').innerHTML;
+            const originalContent = document.body.innerHTML;
+            
+            document.body.innerHTML = `
+            <div style="padding: 20px;">
+                <style>
+                    body { font-family: Arial, sans-serif; }
+                    table { width: 100%; border-collapse: collapse; }
+                    table, th, td { border: 1px solid #ddd; }
+                    th, td { padding: 8px; text-align: left; }
+                    th { background-color: #f2f2f2; }
+                    .text-end { text-align: right; }
+                    .text-center { text-align: center; }
+                    .fw-bold { font-weight: bold; }
+                    .mb-0 { margin-bottom: 0; }
+                    .mb-1 { margin-bottom: 0.25rem; }
+                    .mb-2 { margin-bottom: 0.5rem; }
+                    .mb-3 { margin-bottom: 1rem; }
+                    .mb-4 { margin-bottom: 1.5rem; }
+                    .mt-3 { margin-top: 1rem; }
+                    .mt-5 { margin-top: 3rem; }
+                    .text-muted { color: #6c757d; }
+                    h2, h4, h5 { margin-top: 0; }
+                    .row { display: flex; flex-wrap: wrap; }
+                    .col-md-6 { width: 50%; }
+                    .badge { padding: 0.35em 0.65em; font-size: 0.75em; font-weight: 700; border-radius: 0.25rem; }
+                    .badge-completed { background-color: #198754; color: white; }
+                    @media print {
+                        .badge-completed { background-color: white !important; color: black !important; border: 1px solid black; }
+                    }
+                </style>
+                ${printContent}
+            </div>`;
+            
+            window.print();
+            document.body.innerHTML = originalContent;
+            
+            // Re-attach event listeners
+            document.addEventListener('DOMContentLoaded', function() {
+                document.getElementById('back-from-receipt').addEventListener('click', function() {
+                    if (currentPaymentId) {
+                        loadPaymentDetails(currentPaymentId);
+                    } else {
+                        showPaymentHistoryView();
+                    }
+                });
+                document.getElementById('print-receipt-btn').addEventListener('click', printReceipt);
+            });
+        }
+    </script>
+</body>
+</html>

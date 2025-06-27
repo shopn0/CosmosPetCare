@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointments - Cosmos Pet Care</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Flatpickr Date Picker -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <!-- Custom CSS -->
+    <link href="../css/main.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="dashboard.html">
+                <i class="fas fa-paw me-2"></i>Cosmos Pet Care
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="dashboard.html">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="pets.html">My Pets</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="appointments.html">Appointments</a>
+                    </li>
+                </ul>
+                <div class="dropdown">
+                    <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-user me-1"></i> <span class="user-name">User</span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="profile.html">Profile</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item logout-btn" href="#">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container py-4">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-lg-3 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="text-center mb-3">
+                            <div class="mb-3">
+                                <i class="fas fa-user-circle" style="font-size: 5rem; color: var(--primary-color);"></i>
+                            </div>
+                            <h5 class="user-name">User Name</h5>
+                            <p class="text-muted mb-0">Pet Owner</p>
+                        </div>
+                        <hr>
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link" href="dashboard.html">
+                                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="pets.html">
+                                    <i class="fas fa-paw"></i> My Pets
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" href="appointments.html">
+                                    <i class="fas fa-calendar-check"></i> Appointments
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="payments.html">
+                                    <i class="fas fa-credit-card"></i> Payments
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="profile.html">
+                                    <i class="fas fa-user-cog"></i> Profile
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link logout-btn" href="#">
+                                    <i class="fas fa-sign-out-alt"></i> Logout
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="col-lg-9">
+                <div class="alert-container"></div>
+                
+                <!-- Appointment List View -->
+                <div id="appointments-list-view">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h3 class="mb-0">My Appointments</h3>
+                        <button class="btn btn-primary" id="book-appointment-btn">
+                            <i class="fas fa-plus-circle me-1"></i> Book New Appointment
+                        </button>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header bg-white">
+                            <ul class="nav nav-tabs card-header-tabs" id="appointmentTabs" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" id="upcoming-tab" data-bs-toggle="tab" data-bs-target="#upcoming" type="button" role="tab">Upcoming</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="past-tab" data-bs-toggle="tab" data-bs-target="#past" type="button" role="tab">Past</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab">All</button>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="tab-content" id="appointmentTabContent">
+                                <!-- Upcoming Appointments Tab -->
+                                <div class="tab-pane fade show active" id="upcoming" role="tabpanel">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Pet</th>
+                                                    <th>Date</th>
+                                                    <th>Vet</th>
+                                                    <th>Status</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="upcoming-appointments">
+                                                <tr>
+                                                    <td colspan="5" class="text-center py-3">
+                                                        <div class="loading-spinner"></div>
+                                                        <p class="mt-2 mb-0">Loading appointments...</p>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                
+                                <!-- Past Appointments Tab -->
+                                <div class="tab-pane fade" id="past" role="tabpanel">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Pet</th>
+                                                    <th>Date</th>
+                                                    <th>Vet</th>
+                                                    <th>Status</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="past-appointments">
+                                                <tr>
+                                                    <td colspan="5" class="text-center py-3">
+                                                        <div class="loading-spinner"></div>
+                                                        <p class="mt-2 mb-0">Loading appointments...</p>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                
+                                <!-- All Appointments Tab -->
+                                <div class="tab-pane fade" id="all" role="tabpanel">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Pet</th>
+                                                    <th>Date</th>
+                                                    <th>Vet</th>
+                                                    <th>Status</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="all-appointments">
+                                                <tr>
+                                                    <td colspan="5" class="text-center py-3">
+                                                        <div class="loading-spinner"></div>
+                                                        <p class="mt-2 mb-0">Loading appointments...</p>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Book Appointment View -->
+                <div id="book-appointment-view" class="d-none">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h3 class="mb-0">Book Appointment</h3>
+                        <button class="btn btn-outline-primary" id="back-to-appointments">
+                            <i class="fas fa-arrow-left me-1"></i> Back to Appointments
+                        </button>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="book-appointment-form">
+                                <div class="mb-3">
+                                    <label for="pet-select" class="form-label">Select Pet</label>
+                                    <select class="form-select" id="pet-select" required>
+                                        <option value="">Choose a pet</option>
+                                    </select>
+                                    <div class="form-text">Don't see your pet? <a href="pets.html#add-pet">Add a new pet</a> first.</div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="appointment-type" class="form-label">Appointment Type</label>
+                                    <select class="form-select" id="appointment-type" required>
+                                        <option value="">Select appointment type</option>
+                                        <option value="Check-up">Regular Check-up</option>
+                                        <option value="Vaccination">Vaccination</option>
+                                        <option value="Illness">Illness or Injury</option>
+                                        <option value="Surgery">Surgery Consultation</option>
+                                        <option value="Dental">Dental Check</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="appointment-date" class="form-label">Preferred Date and Time</label>
+                                    <input type="text" class="form-control" id="appointment-date" placeholder="Select date and time" required>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="vet-select" class="form-label">Preferred Veterinarian</label>
+                                    <select class="form-select" id="vet-select">
+                                        <option value="">Any available vet</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="appointment-notes" class="form-label">Symptoms or Notes</label>
+                                    <textarea class="form-control" id="appointment-notes" rows="3" placeholder="Describe your pet's symptoms or any special requests"></textarea>
+                                </div>
+                                
+                                <div class="d-grid gap-2">
+                                    <button type="submit" class="btn btn-primary">Submit Appointment Request</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Appointment Details View -->
+                <div id="appointment-details-view" class="d-none">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h3 class="mb-0">Appointment Details</h3>
+                        <button class="btn btn-outline-primary" id="back-from-details">
+                            <i class="fas fa-arrow-left me-1"></i> Back to Appointments
+                        </button>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6 mb-4">
+                                    <h5>Appointment Information</h5>
+                                    <div class="row mb-3">
+                                        <div class="col-sm-4">
+                                            <p class="mb-0 text-muted">Pet</p>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <p id="detail-pet-name" class="mb-0 fw-bold">Max</p>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-sm-4">
+                                            <p class="mb-0 text-muted">Date</p>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <p id="detail-date" class="mb-0">April 30, 2025 10:30 AM</p>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-sm-4">
+                                            <p class="mb-0 text-muted">Type</p>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <p id="detail-type" class="mb-0">Regular Check-up</p>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-sm-4">
+                                            <p class="mb-0 text-muted">Status</p>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <span id="detail-status" class="badge badge-confirmed">Confirmed</span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-sm-4">
+                                            <p class="mb-0 text-muted">Veterinarian</p>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <p id="detail-vet" class="mb-0">Dr. Sarah Johnson</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <h5>Notes</h5>
+                                    <div class="card">
+                                        <div class="card-body bg-light">
+                                            <p id="detail-notes" class="mb-0">Annual check-up and vaccination</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div id="diagnosis-section" class="mt-2">
+                                <h5>Diagnosis & Prescription</h5>
+                                <div class="card">
+                                    <div class="card-body bg-light">
+                                        <div id="diagnosis-content">
+                                            <div class="row mb-3">
+                                                <div class="col-sm-3">
+                                                    <p class="mb-0 text-muted">Diagnosis</p>
+                                                </div>
+                                                <div class="col-sm-9">
+                                                    <p id="detail-diagnosis" class="mb-0">Healthy overall, slight tartar build-up on teeth.</p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-3">
+                                                    <p class="mb-0 text-muted">Prescription</p>
+                                                </div>
+                                                <div class="col-sm-9">
+                                                    <p id="detail-prescription" class="mb-0">Dental treats for tartar control.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="no-diagnosis-content" class="text-center py-2 d-none">
+                                            <p class="mb-0 text-muted">No diagnosis or prescription available yet.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-white d-flex justify-content-between">
+                            <button id="cancel-appointment-btn" class="btn btn-outline-danger">
+                                <i class="fas fa-times-circle me-1"></i> Cancel Appointment
+                            </button>
+                            <div>
+                                <button id="reschedule-btn" class="btn btn-outline-primary me-2">
+                                    <i class="fas fa-calendar-alt me-1"></i> Reschedule
+                                </button>
+                                <a id="make-payment-btn" href="payments.html?appointment=" class="btn btn-primary">
+                                    <i class="fas fa-credit-card me-1"></i> Make Payment
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cancel Appointment Modal -->
+    <div class="modal fade" id="cancelAppointmentModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirm Cancellation</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to cancel this appointment? This action cannot be undone.</p>
+                    <p class="mb-0 fw-bold" id="cancel-appointment-details"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Go Back</button>
+                    <button type="button" class="btn btn-danger" id="confirm-cancel-btn">Yes, Cancel Appointment</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reschedule Appointment Modal -->
+    <div class="modal fade" id="rescheduleModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Reschedule Appointment</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="reschedule-date" class="form-label">New Date and Time</label>
+                        <input type="text" class="form-control" id="reschedule-date" placeholder="Select new date and time" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="confirm-reschedule-btn">Reschedule</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-4 border-top">
+        <div class="container text-center">
+            <p class="mb-0">&copy; 2025 Cosmos Pet Care</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Flatpickr -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <!-- Custom JS -->
+    <script src="../js/main.js"></script>
+    <script>
+        let allAppointments = [];
+        let currentAppointmentId = null;
+        let petsData = [];
+        let vetsData = [];
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is logged in and has customer role
+            if (!AUTH.isLoggedIn() || AUTH.getRole() !== 'customer') {
+                window.location.href = '../login.html';
+                return;
+            }
+            
+            // Initialize date pickers
+            flatpickr("#appointment-date", {
+                enableTime: true,
+                dateFormat: "Y-m-d H:i",
+                minDate: "today",
+                time_24hr: false
+            });
+            
+            flatpickr("#reschedule-date", {
+                enableTime: true,
+                dateFormat: "Y-m-d H:i",
+                minDate: "today",
+                time_24hr: false
+            });
+            
+            // Check URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            if (urlParams.get('book') === 'true') {
+                // Show booking view
+                showBookAppointmentView();
+                // Check if pet ID is provided
+                const petId = urlParams.get('pet');
+                if (petId) {
+                    // Set the selected pet
+                    loadPets().then(() => {
+                        document.getElementById('pet-select').value = petId;
+                    });
+                }
+            } else if (urlParams.get('id')) {
+                // Show appointment details
+                loadAppointmentDetails(urlParams.get('id'));
+            } else {
+                // Load appointments list
+                loadAppointments();
+            }
+            
+            // Load pets and vets for the booking form
+            loadPets();
+            loadVets();
+            
+            // Event handlers
+            document.querySelector('.logout-btn').addEventListener('click', function(e) {
+                e.preventDefault();
+                AUTH.clearAuth();
+                window.location.href = '../login.html';
+            });
+            
+            // Tab change handlers
+            document.querySelectorAll('[data-bs-toggle="tab"]').forEach(tab => {
+                tab.addEventListener('shown.bs.tab', function(e) {
+                    if (e.target.id === 'upcoming-tab') {
+                        displayAppointments('upcoming');
+                    } else if (e.target.id === 'past-tab') {
+                        displayAppointments('past');
+                    } else if (e.target.id === 'all-tab') {
+                        displayAppointments('all');
+                    }
+                });
+            });
+            
+            // Navigation handlers
+            document.getElementById('book-appointment-btn').addEventListener('click', showBookAppointmentView);
+            document.getElementById('back-to-appointments').addEventListener('click', showAppointmentsListView);
+            document.getElementById('back-from-details').addEventListener('click', showAppointmentsListView);
+            
+            // Form submission handlers
+            document.getElementById('book-appointment-form').addEventListener('submit', bookAppointment);
+            
+            // Appointment action handlers
+            document.getElementById('cancel-appointment-btn').addEventListener('click', showCancelConfirmation);
+            document.getElementById('confirm-cancel-btn').addEventListener('click', cancelAppointment);
+            document.getElementById('reschedule-btn').addEventListener('click', showRescheduleModal);
+            document.getElementById('confirm-reschedule-btn').addEventListener('click', rescheduleAppointment);
+        });
+        
+        async function loadAppointments() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/appointments_get.php?owner_id=${AUTH.user.id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${AUTH.token}`
+                    }
+                });
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    allAppointments = result.data.appointments;
+                    
+                    // Display in appropriate tabs
+                    displayAppointments('upcoming');
+                    // Other tabs will be loaded when clicked
+                } else {
+                    const noAppointmentsMessage = 
+                        `<tr>
+                            <td colspan="5" class="text-center py-3">
+                                <p class="mb-2">No appointments found.</p>
+                                <button class="btn btn-sm btn-primary" id="no-appointments-book-btn">
+                                    <i class="fas fa-plus-circle me-1"></i> Book your first appointment
+                                </button>
+                            </td>
+                        </tr>`;
+                    
+                    document.getElementById('upcoming-appointments').innerHTML = noAppointmentsMessage;
+                    document.getElementById('past-appointments').innerHTML = noAppointmentsMessage;
+                    document.getElementById('all-appointments').innerHTML = noAppointmentsMessage;
+                    
+                    // Add event listener to the buttons
+                    document.querySelectorAll('#no-appointments-book-btn').forEach(btn => {
+                        btn.addEventListener('click', showBookAppointmentView);
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading appointments:', error);
+                UTILS.showAlert('Error loading appointments. Please try again.', 'danger');
+            }
+        }
+        
+        function displayAppointments(type) {
+            if (!allAppointments || allAppointments.length === 0) {
+                return; // Already handled in loadAppointments
+            }
+            
+            const now = new Date();
+            let appointments;
+            let targetElement;
+            
+            if (type === 'upcoming') {
+                appointments = allAppointments.filter(appointment => {
+                    return new Date(appointment.date) >= now;
+                });
+                targetElement = 'upcoming-appointments';
+            } else if (type === 'past') {
+                appointments = allAppointments.filter(appointment => {
+                    return new Date(appointment.date) < now;
+                });
+                targetElement = 'past-appointments';
+            } else {
+                appointments = allAppointments;
+                targetElement = 'all-appointments';
+            }
+            
+            if (appointments.length === 0) {
+                document.getElementById(targetElement).innerHTML = 
+                    `<tr>
+                        <td colspan="5" class="text-center py-3">
+                            <p class="mb-0">No ${type} appointments found.</p>
+                        </td>
+                    </tr>`;
+                return;
+            }
+            
+            let appointmentsHtml = '';
+            
+            appointments.forEach(appointment => {
+                // Status badge
+                const statusClass = appointment.status === 'pending' ? 'badge-pending' :
+                                   appointment.status === 'confirmed' ? 'badge-confirmed' :
+                                   appointment.status === 'completed' ? 'badge-completed' :
+                                   'badge-cancelled';
+                
+                // Format date
+                const appointmentDate = new Date(appointment.date);
+                const formattedDate = appointmentDate.toLocaleDateString() + ' ' + 
+                                     appointmentDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                
+                appointmentsHtml += `
+                <tr>
+                    <td>${appointment.pet_name}</td>
+                    <td>${formattedDate}</td>
+                    <td>Dr. ${appointment.vet_name}</td>
+                    <td><span class="badge ${statusClass}">${appointment.status}</span></td>
+                    <td>
+                        <a href="appointments.html?id=${appointment.id}" class="btn btn-sm btn-outline-primary">View</a>
+                    </td>
+                </tr>`;
+            });
+            
+            document.getElementById(targetElement).innerHTML = appointmentsHtml;
+        }
+        
+        async function loadAppointmentDetails(appointmentId) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/appointments_get.php?id=${appointmentId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${AUTH.token}`
+                    }
+                });
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    const appointment = result.data.appointment;
+                    currentAppointmentId = appointment.id;
+                    
+                    // Update appointment details in UI
+                    document.getElementById('detail-pet-name').textContent = appointment.pet_name;
+                    
+                    // Format date
+                    const appointmentDate = new Date(appointment.date);
+                    const formattedDate = appointmentDate.toLocaleDateString() + ' ' + 
+                                         appointmentDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                    document.getElementById('detail-date').textContent = formattedDate;
+                    
+                    document.getElementById('detail-type').textContent = appointment.type;
+                    
+                    // Status badge
+                    const statusClass = appointment.status === 'pending' ? 'badge-pending' :
+                                       appointment.status === 'confirmed' ? 'badge-confirmed' :
+                                       appointment.status === 'completed' ? 'badge-completed' :
+                                       'badge-cancelled';
+                    document.getElementById('detail-status').className = `badge ${statusClass}`;
+                    document.getElementById('detail-status').textContent = appointment.status;
+                    
+                    document.getElementById('detail-vet').textContent = `Dr. ${appointment.vet_name}`;
+                    document.getElementById('detail-notes').textContent = appointment.notes || 'No notes provided';
+                    
+                    // Handle diagnosis and prescription display
+                    if (appointment.diagnosis) {
+                        document.getElementById('detail-diagnosis').textContent = appointment.diagnosis;
+                        document.getElementById('detail-prescription').textContent = appointment.prescription || 'None';
+                        document.getElementById('diagnosis-content').classList.remove('d-none');
+                        document.getElementById('no-diagnosis-content').classList.add('d-none');
+                    } else {
+                        document.getElementById('diagnosis-content').classList.add('d-none');
+                        document.getElementById('no-diagnosis-content').classList.remove('d-none');
+                    }
+                    
+                    // Update payment button link
+                    document.getElementById('make-payment-btn').href = `payments.html?appointment=${appointment.id}`;
+                    
+                    // Show/hide buttons based on appointment status
+                    if (appointment.status === 'cancelled' || appointment.status === 'completed') {
+                        document.getElementById('cancel-appointment-btn').classList.add('d-none');
+                        document.getElementById('reschedule-btn').classList.add('d-none');
+                    } else {
+                        document.getElementById('cancel-appointment-btn').classList.remove('d-none');
+                        document.getElementById('reschedule-btn').classList.remove('d-none');
+                    }
+                    
+                    // Show payment button only if status is confirmed or completed
+                    if (appointment.status === 'confirmed' || appointment.status === 'completed') {
+                        document.getElementById('make-payment-btn').classList.remove('d-none');
+                    } else {
+                        document.getElementById('make-payment-btn').classList.add('d-none');
+                    }
+                    
+                    // Show appointment details view
+                    showAppointmentDetailsView();
+                } else {
+                    UTILS.showAlert('Appointment not found', 'danger');
+                    showAppointmentsListView(); // Fallback to list view
+                }
+            } catch (error) {
+                console.error('Error loading appointment details:', error);
+                UTILS.showAlert('Error loading appointment details. Please try again.', 'danger');
+            }
+        }
+        
+        async function loadPets() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/pets_get.php?owner_id=${AUTH.user.id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${AUTH.token}`
+                    }
+                });
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    petsData = result.data.pets;
+                    
+                    // Populate pet select dropdown
+                    const petSelect = document.getElementById('pet-select');
+                    petSelect.innerHTML = '<option value="">Choose a pet</option>';
+                    
+                    petsData.forEach(pet => {
+                        const option = document.createElement('option');
+                        option.value = pet.id;
+                        option.textContent = `${pet.name} (${pet.type}, ${pet.breed})`;
+                        petSelect.appendChild(option);
+                    });
+                    
+                    return true;
+                } else {
+                    // No pets found, show message
+                    const petSelect = document.getElementById('pet-select');
+                    petSelect.innerHTML = '<option value="">No pets found</option>';
+                    return false;
+                }
+            } catch (error) {
+                console.error('Error loading pets:', error);
+                UTILS.showAlert('Error loading pets. Please try again.', 'danger');
+                return false;
+            }
+        }
+        
+        async function loadVets() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/users_manage.php?role=vet`, {
+                    headers: {
+                        'Authorization': `Bearer ${AUTH.token}`
+                    }
+                });
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    vetsData = result.data.users;
+                    
+                    // Populate vet select dropdown
+                    const vetSelect = document.getElementById('vet-select');
+                    vetSelect.innerHTML = '<option value="">Any available vet</option>';
+                    
+                    vetsData.forEach(vet => {
+                        const option = document.createElement('option');
+                        option.value = vet.id;
+                        option.textContent = `Dr. ${vet.name}`;
+                        vetSelect.appendChild(option);
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading vets:', error);
+                // Don't show alert, this is not critical
+            }
+        }
+        
+        function showAppointmentsListView() {
+            document.getElementById('appointments-list-view').classList.remove('d-none');
+            document.getElementById('book-appointment-view').classList.add('d-none');
+            document.getElementById('appointment-details-view').classList.add('d-none');
+            
+            // Update URL without reloading page
+            history.pushState({}, '', 'appointments.html');
+            
+            // Reload appointments in case there were changes
+            loadAppointments();
+        }
+        
+        function showBookAppointmentView() {
+            document.getElementById('appointments-list-view').classList.add('d-none');
+            document.getElementById('book-appointment-view').classList.remove('d-none');
+            document.getElementById('appointment-details-view').classList.add('d-none');
+            
+            // Update URL without reloading page
+            history.pushState({}, '', 'appointments.html?book=true');
+        }
+        
+        function showAppointmentDetailsView() {
+            document.getElementById('appointments-list-view').classList.add('d-none');
+            document.getElementById('book-appointment-view').classList.add('d-none');
+            document.getElementById('appointment-details-view').classList.remove('d-none');
+        }
+        
+        async function bookAppointment(e) {
+            e.preventDefault();
+            
+            // Show loading state first to provide immediate feedback
+            const submitBtn = document.querySelector('#book-appointment-form button[type="submit"]');
+            const originalBtnText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<span class="loading-spinner"></span> Submitting...';
+            submitBtn.disabled = true;
+            
+            // Add a safety timeout to reset the button if something goes terribly wrong
+            const safetyTimeout = setTimeout(() => {
+                console.log("Safety timeout triggered - resetting button state");
+                submitBtn.innerHTML = originalBtnText;
+                submitBtn.disabled = false;
+                UTILS.showAlert('Request timed out. Please try again.', 'danger');
+            }, 15000); // 15 seconds timeout
+            
+            try {
+                // Get form data
+                const petId = document.getElementById('pet-select').value;
+                const appointmentType = document.getElementById('appointment-type').value;
+                const appointmentDate = document.getElementById('appointment-date').value;
+                const vetSelect = document.getElementById('vet-select');
+                const notes = document.getElementById('appointment-notes').value || '';
+                
+                // Validate form
+                if (!petId) {
+                    throw new Error('Please select a pet');
+                }
+                
+                if (!appointmentType) {
+                    throw new Error('Please select an appointment type');
+                }
+                
+                if (!appointmentDate) {
+                    throw new Error('Please select a date and time');
+                }
+                
+                // Get vet ID - if none selected, use first available
+                let vetId;
+                if (vetSelect.value) {
+                    vetId = vetSelect.value;
+                } else if (vetsData && vetsData.length > 0) {
+                    vetId = vetsData[0].id;
+                    console.log('No vet selected, using first available vet: ' + vetsData[0].name);
+                } else {
+                    throw new Error('No veterinarians available for booking. Please try again later.');
+                }
+                
+                // Prepare the exact data format expected by the API
+                const appointmentData = {
+                    pet_id: parseInt(petId),
+                    vet_id: parseInt(vetId),
+                    date: appointmentDate,
+                    reason: appointmentType,
+                    notes: notes
+                };
+                
+                console.log('[DEBUG] Sending appointment data:', JSON.stringify(appointmentData, null, 2));
+                
+                // Make the API call with proper error handling
+                const response = await fetch(`${API_BASE_URL}/appointments_book.php`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${AUTH.token}`
+                    },
+                    body: JSON.stringify(appointmentData)
+                });
+                
+                // Read the response text regardless of status
+                const responseText = await response.text();
+                console.log('[DEBUG] Raw server response:', responseText);
+                
+                // Try to parse as JSON
+                let result;
+                try {
+                    result = JSON.parse(responseText);
+                    console.log('[DEBUG] Parsed response:', result);
+                } catch (parseError) {
+                    console.error('[DEBUG] Failed to parse JSON response:', parseError);
+                    throw new Error('Invalid response from server. Check the API endpoint.');
+                }
+                
+                // Clear the safety timeout since we got a response
+                clearTimeout(safetyTimeout);
+                
+                if (result.status === 'success') {
+                    console.log('[DEBUG] Booking successful!');
+                    
+                    // Show success message
+                    UTILS.showAlert('Appointment booked successfully!', 'success');
+                    
+                    // Reset form
+                    document.getElementById('book-appointment-form').reset();
+                    
+                    // Get the appointment ID from the response
+                    const appointmentId = result.data?.appointment?.id;
+                    
+                    if (appointmentId) {
+                        // Redirect to appointment details page after a brief delay
+                        console.log('[DEBUG] Redirecting to appointment details:', appointmentId);
+                        setTimeout(() => {
+                            window.location.href = `appointments.html?id=${appointmentId}`;
+                        }, 1500);
+                    } else {
+                        console.log('[DEBUG] No appointment ID in response, redirecting to list view');
+                        // If no appointment ID, go to the appointments list
+                        setTimeout(() => {
+                            window.location.href = 'appointments.html';
+                        }, 1500);
+                    }
+                } else {
+                    // Reset button state
+                    submitBtn.innerHTML = originalBtnText;
+                    submitBtn.disabled = false;
+                    
+                    // If we got a response but status is error
+                    console.error('[DEBUG] Error from server:', result.message);
+                    UTILS.showAlert(result.message || 'Failed to book appointment', 'danger');
+                }
+            } catch (error) {
+                // Clear the safety timeout
+                clearTimeout(safetyTimeout);
+                
+                // Log detailed error information
+                console.error('[DEBUG] Error during booking process:', error);
+                
+                // Show error message
+                UTILS.showAlert(error.message || 'Error booking appointment. Please try again.', 'danger');
+                
+                // Reset button
+                submitBtn.innerHTML = originalBtnText;
+                submitBtn.disabled = false;
+            }
+        }
+        
+        function showCancelConfirmation() {
+            if (!currentAppointmentId) return;
+            
+            // Find current appointment details
+            const appointment = allAppointments.find(a => a.id == currentAppointmentId);
+            if (!appointment) return;
+            
+            // Format date for display
+            const appointmentDate = new Date(appointment.date);
+            const formattedDate = appointmentDate.toLocaleDateString() + ' at ' + 
+                                 appointmentDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            
+            // Update confirmation message
+            document.getElementById('cancel-appointment-details').textContent = 
+                `${appointment.pet_name} with Dr. ${appointment.vet_name} on ${formattedDate}`;
+            
+            // Show modal
+            new bootstrap.Modal(document.getElementById('cancelAppointmentModal')).show();
+        }
+        
+        async function cancelAppointment() {
+            if (!currentAppointmentId) return;
+            
+            try {
+                // Show loading state
+                const cancelBtn = document.getElementById('confirm-cancel-btn');
+                const originalBtnText = cancelBtn.innerHTML;
+                cancelBtn.innerHTML = '<span class="loading-spinner"></span> Cancelling...';
+                cancelBtn.disabled = true;
+                
+                // Cancel appointment
+                const response = await fetch(`${API_BASE_URL}/appointments_update.php`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${AUTH.token}`
+                    },
+                    body: JSON.stringify({
+                        id: currentAppointmentId,
+                        status: 'cancelled'
+                    })
+                });
+                const result = await response.json();
+                
+                // Hide modal
+                const modal = bootstrap.Modal.getInstance(document.getElementById('cancelAppointmentModal'));
+                modal.hide();
+                
+                if (result.status === 'success') {
+                    // Show success message
+                    UTILS.showAlert('Appointment cancelled successfully!', 'success');
+                    
+                    // Reload appointment details
+                    loadAppointmentDetails(currentAppointmentId);
+                } else {
+                    // Show error message
+                    UTILS.showAlert(result.message || 'Failed to cancel appointment', 'danger');
+                    
+                    // Reset button
+                    cancelBtn.innerHTML = originalBtnText;
+                    cancelBtn.disabled = false;
+                }
+            } catch (error) {
+                console.error('Error cancelling appointment:', error);
+                UTILS.showAlert('Error cancelling appointment. Please try again.', 'danger');
+                
+                // Reset button
+                const cancelBtn = document.getElementById('confirm-cancel-btn');
+                cancelBtn.innerHTML = 'Yes, Cancel Appointment';
+                cancelBtn.disabled = false;
+                
+                // Hide modal
+                const modal = bootstrap.Modal.getInstance(document.getElementById('cancelAppointmentModal'));
+                modal.hide();
+            }
+        }
+        
+        function showRescheduleModal() {
+            if (!currentAppointmentId) return;
+            
+            // Find current appointment
+            const appointment = allAppointments.find(a => a.id == currentAppointmentId);
+            if (!appointment) return;
+            
+            // Show modal
+            new bootstrap.Modal(document.getElementById('rescheduleModal')).show();
+        }
+        
+        async function rescheduleAppointment() {
+            if (!currentAppointmentId) return;
+            
+            const newDate = document.getElementById('reschedule-date').value;
+            if (!newDate) {
+                UTILS.showAlert('Please select a new date and time', 'danger', '#rescheduleModal .modal-body');
+                return;
+            }
+            
+            try {
+                // Show loading state
+                const rescheduleBtn = document.getElementById('confirm-reschedule-btn');
+                const originalBtnText = rescheduleBtn.innerHTML;
+                rescheduleBtn.innerHTML = '<span class="loading-spinner"></span> Rescheduling...';
+                rescheduleBtn.disabled = true;
+                
+                // Update appointment
+                const response = await fetch(`${API_BASE_URL}/appointments_update.php`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${AUTH.token}`
+                    },
+                    body: JSON.stringify({
+                        id: currentAppointmentId,
+                        date: newDate,
+                        status: 'pending' // Reset to pending since it needs to be confirmed again
+                    })
+                });
+                const result = await response.json();
+                
+                // Hide modal
+                const modal = bootstrap.Modal.getInstance(document.getElementById('rescheduleModal'));
+                modal.hide();
+                
+                if (result.status === 'success') {
+                    // Show success message
+                    UTILS.showAlert('Appointment rescheduled successfully!', 'success');
+                    
+                    // Reload appointment details
+                    loadAppointmentDetails(currentAppointmentId);
+                } else {
+                    // Show error message
+                    UTILS.showAlert(result.message || 'Failed to reschedule appointment', 'danger');
+                    
+                    // Reset button
+                    rescheduleBtn.innerHTML = originalBtnText;
+                    rescheduleBtn.disabled = false;
+                }
+            } catch (error) {
+                console.error('Error rescheduling appointment:', error);
+                UTILS.showAlert('Error rescheduling appointment. Please try again.', 'danger');
+                
+                // Reset button
+                const rescheduleBtn = document.getElementById('confirm-reschedule-btn');
+                rescheduleBtn.innerHTML = 'Reschedule';
+                rescheduleBtn.disabled = false;
+                
+                // Hide modal
+                const modal = bootstrap.Modal.getInstance(document.getElementById('rescheduleModal'));
+                modal.hide();
+            }
+        }
+    </script>
+</body>
+</html>

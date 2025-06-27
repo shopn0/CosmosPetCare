@@ -1,0 +1,128 @@
+-- Veterinary Management System Database Schema
+
+-- Create database
+CREATE DATABASE IF NOT EXISTS vet_management_system;
+
+-- Use the database
+USE vet_management_system;
+
+-- Users table (Admin, Customer, Vet)
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    role ENUM('admin', 'customer', 'vet') NOT NULL,
+    phone VARCHAR(20),
+    address TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- Pets table
+CREATE TABLE pets (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    type VARCHAR(50) NOT NULL,
+    breed VARCHAR(100),
+    age INT,
+    gender ENUM('male', 'female', 'unknown') DEFAULT 'unknown',
+    color VARCHAR(50),
+    owner_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+-- Appointments table
+CREATE TABLE appointments (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    pet_id INT NOT NULL,
+    vet_id INT NOT NULL,
+    date DATETIME NOT NULL,
+    status ENUM('pending', 'confirmed', 'completed', 'cancelled') DEFAULT 'pending',
+    reason TEXT,
+    diagnosis TEXT,
+    prescription TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (pet_id) REFERENCES pets(id) ON DELETE CASCADE,
+    FOREIGN KEY (vet_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+-- Payments table
+CREATE TABLE payments (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    appointment_id INT NOT NULL,
+    amount DECIMAL(10, 2) NOT NULL,
+    status ENUM('pending', 'completed', 'refunded') DEFAULT 'pending',
+    method ENUM('card') NOT NULL,
+    transaction_id VARCHAR(100),
+    payment_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (appointment_id) REFERENCES appointments(id) ON DELETE CASCADE
+);
+
+-- Insert demo data (Bangladeshi information)
+
+-- Admin user
+INSERT INTO users (name, email, password, role, phone, address) VALUES
+('Rahim Ahmed', 'admin@vetcare.bd', '$2y$10$xGC1tYghZU2j1Yvs/I3Kj.Q6Qe.x.3CG6UT/pMFmGgZbAasatXFe.', 'admin', '01712345678', 'House 10, Road 5, Dhanmondi, Dhaka');
+
+-- Vet users
+INSERT INTO users (name, email, password, role, phone, address) VALUES
+('Dr. Farida Rahman', 'farida@vetcare.bd', '$2y$10$xGC1tYghZU2j1Yvs/I3Kj.Q6Qe.x.3CG6UT/pMFmGgZbAasatXFe.', 'vet', '01812345678', 'Uttara, Dhaka'),
+('Dr. Kamal Hossain', 'kamal@vetcare.bd', '$2y$10$xGC1tYghZU2j1Yvs/I3Kj.Q6Qe.x.3CG6UT/pMFmGgZbAasatXFe.', 'vet', '01912345678', 'Gulshan, Dhaka');
+
+-- Customer users
+INSERT INTO users (name, email, password, role, phone, address) VALUES
+('Nasreen Begum', 'nasreen@gmail.com', '$2y$10$xGC1tYghZU2j1Yvs/I3Kj.Q6Qe.x.3CG6UT/pMFmGgZbAasatXFe.', 'customer', '01612345678', 'Mirpur, Dhaka'),
+('Md. Anwar Hossain', 'anwar@gmail.com', '$2y$10$xGC1tYghZU2j1Yvs/I3Kj.Q6Qe.x.3CG6UT/pMFmGgZbAasatXFe.', 'customer', '01512345678', 'Mohammadpur, Dhaka'),
+('Sadia Islam', 'sadia@gmail.com', '$2y$10$xGC1tYghZU2j1Yvs/I3Kj.Q6Qe.x.3CG6UT/pMFmGgZbAasatXFe.', 'customer', '01412345678', 'Banani, Dhaka');
+
+-- Additional Customer users
+INSERT INTO users (name, email, password, role, phone, address) VALUES
+('Ayesha Akter', 'ayesha@gmail.com', '$2y$10$xGC1tYghZU2j1Yvs/I3Kj.Q6Qe.x.3CG6UT/pMFmGgZbAasatXFe.', 'customer', '01312345678', 'Bashundhara, Dhaka'),
+('Tanvir Rahman', 'tanvir@gmail.com', '$2y$10$xGC1tYghZU2j1Yvs/I3Kj.Q6Qe.x.3CG6UT/pMFmGgZbAasatXFe.', 'customer', '01212345678', 'Shantinagar, Dhaka');
+
+-- Pets
+INSERT INTO pets (name, type, breed, age, gender, color, owner_id) VALUES
+('Moti', 'Dog', 'Local', 3, 'male', 'Brown', 4),
+('Bilu', 'Cat', 'Persian', 2, 'female', 'White', 4),
+('Tommy', 'Dog', 'German Shepherd', 4, 'male', 'Black and Tan', 5),
+('Moyna', 'Bird', 'Parrot', 1, 'female', 'Green', 6);
+
+-- Additional Pets
+INSERT INTO pets (name, type, breed, age, gender, color, owner_id) VALUES
+('Shuvo', 'Dog', 'Labrador', 5, 'male', 'Golden', 7),
+('Mimi', 'Cat', 'Bengal', 3, 'female', 'Brown', 8);
+
+-- Appointments
+INSERT INTO appointments (pet_id, vet_id, date, status, reason) VALUES
+(1, 2, '2025-05-05 10:00:00', 'confirmed', 'Annual checkup'),
+(2, 3, '2025-05-06 11:30:00', 'pending', 'Not eating properly'),
+(3, 2, '2025-05-04 14:00:00', 'completed', 'Skin infection'),
+(4, 3, '2025-05-07 09:30:00', 'pending', 'Wing injury');
+
+-- Additional Appointments
+INSERT INTO appointments (pet_id, vet_id, date, status, reason) VALUES
+(5, 2, '2025-05-08 10:00:00', 'pending', 'Vaccination'),
+(6, 3, '2025-05-09 11:00:00', 'pending', 'Routine checkup');
+
+-- Update completed appointment with diagnosis and prescription
+UPDATE appointments 
+SET diagnosis = 'Mild skin infection due to allergies', 
+    prescription = 'Apply Betadine solution twice daily. Cetrizine 5mg once daily for 7 days.' 
+WHERE id = 3;
+
+-- Payments
+INSERT INTO payments (appointment_id, amount, status, method, transaction_id) VALUES
+(1, 1500.00, 'pending', 'card', NULL),
+(2, 1500.00, 'pending', 'card', NULL),
+(3, 2200.00, 'completed', 'card', NULL),
+(4, 1000.00, 'pending', 'card', 'NG123456789');
+
+-- Additional Payments
+INSERT INTO payments (appointment_id, amount, status, method, transaction_id) VALUES
+(5, 1200.00, 'pending', 'card', NULL),
+(6, 1800.00, 'pending', 'card', NULL);

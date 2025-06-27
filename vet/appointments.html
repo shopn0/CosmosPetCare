@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointments - Cosmos Pet Care</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Flatpickr Date Picker -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <!-- Custom CSS -->
+    <link href="../css/main.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="dashboard.html">
+                <i class="fas fa-paw me-2"></i>Cosmos Pet Care
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="dashboard.html">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="appointments.html">All Appointments</a>
+                    </li>
+                </ul>
+                <div class="dropdown">
+                    <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-user-md me-1"></i> <span class="user-name">Dr. User</span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="profile.html">Profile</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item logout-btn" href="#">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container py-4">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-lg-3 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="text-center mb-3">
+                            <div class="mb-3">
+                                <i class="fas fa-user-md" style="font-size: 5rem; color: var(--primary-color);"></i>
+                            </div>
+                            <h5 class="user-name">Dr. User Name</h5>
+                            <p class="text-muted mb-0">Veterinarian</p>
+                        </div>
+                        <hr>
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link" href="dashboard.html">
+                                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" href="appointments.html">
+                                    <i class="fas fa-calendar-check"></i> All Appointments
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="profile.html">
+                                    <i class="fas fa-user-cog"></i> Profile
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link logout-btn" href="#">
+                                    <i class="fas fa-sign-out-alt"></i> Logout
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="col-lg-9">
+                <div class="alert-container"></div>
+                
+                <!-- Appointment List View -->
+                <div id="appointments-list-view">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h3 class="mb-0">My Appointments</h3>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header bg-white">
+                            <ul class="nav nav-tabs card-header-tabs" id="appointmentTabs" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" id="pending-tab" data-bs-toggle="tab" data-bs-target="#pending" type="button" role="tab">Pending</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="upcoming-tab" data-bs-toggle="tab" data-bs-target="#upcoming" type="button" role="tab">Upcoming</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="completed-tab" data-bs-toggle="tab" data-bs-target="#completed" type="button" role="tab">Completed</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab">All</button>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="tab-content" id="appointmentTabContent">
+                                <!-- Pending Appointments Tab -->
+                                <div class="tab-pane fade show active" id="pending" role="tabpanel">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Pet</th>
+                                                    <th>Owner</th>
+                                                    <th>Date</th>
+                                                    <th>Type</th>
+                                                    <th>Status</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="pending-appointments">
+                                                <tr>
+                                                    <td colspan="6" class="text-center py-3">
+                                                        <div class="loading-spinner"></div>
+                                                        <p class="mt-2 mb-0">Loading appointments...</p>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                
+                                <!-- Upcoming Appointments Tab -->
+                                <div class="tab-pane fade" id="upcoming" role="tabpanel">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Pet</th>
+                                                    <th>Owner</th>
+                                                    <th>Date</th>
+                                                    <th>Type</th>
+                                                    <th>Status</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="upcoming-appointments">
+                                                <tr>
+                                                    <td colspan="6" class="text-center py-3">
+                                                        <div class="loading-spinner"></div>
+                                                        <p class="mt-2 mb-0">Loading appointments...</p>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                
+                                <!-- Completed Appointments Tab -->
+                                <div class="tab-pane fade" id="completed" role="tabpanel">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Pet</th>
+                                                    <th>Owner</th>
+                                                    <th>Date</th>
+                                                    <th>Type</th>
+                                                    <th>Status</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="completed-appointments">
+                                                <tr>
+                                                    <td colspan="6" class="text-center py-3">
+                                                        <div class="loading-spinner"></div>
+                                                        <p class="mt-2 mb-0">Loading appointments...</p>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                
+                                <!-- All Appointments Tab -->
+                                <div class="tab-pane fade" id="all" role="tabpanel">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Pet</th>
+                                                    <th>Owner</th>
+                                                    <th>Date</th>
+                                                    <th>Type</th>
+                                                    <th>Status</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="all-appointments">
+                                                <tr>
+                                                    <td colspan="6" class="text-center py-3">
+                                                        <div class="loading-spinner"></div>
+                                                        <p class="mt-2 mb-0">Loading appointments...</p>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Appointment Details View -->
+                <div id="appointment-details-view" class="d-none">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h3 class="mb-0">Appointment Details</h3>
+                        <button class="btn btn-outline-primary" id="back-from-details">
+                            <i class="fas fa-arrow-left me-1"></i> Back to Appointments
+                        </button>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6 mb-4">
+                                    <h5>Appointment Information</h5>
+                                    <div class="row mb-3">
+                                        <div class="col-sm-4">
+                                            <p class="mb-0 text-muted">Pet</p>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <p id="detail-pet-name" class="mb-0 fw-bold">Max</p>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-sm-4">
+                                            <p class="mb-0 text-muted">Owner</p>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <p id="detail-owner-name" class="mb-0">John Doe</p>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-sm-4">
+                                            <p class="mb-0 text-muted">Date</p>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <p id="detail-date" class="mb-0">April 30, 2025 10:30 AM</p>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-sm-4">
+                                            <p class="mb-0 text-muted">Type</p>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <p id="detail-type" class="mb-0">Regular Check-up</p>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-sm-4">
+                                            <p class="mb-0 text-muted">Status</p>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <span id="detail-status" class="badge badge-confirmed">Confirmed</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <h5>Notes</h5>
+                                    <div class="card">
+                                        <div class="card-body bg-light">
+                                            <p id="detail-notes" class="mb-0">Annual check-up and vaccination</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div id="diagnosis-section" class="mt-2">
+                                <div id="diagnosis-content">
+                                    <h5>Diagnosis & Prescription</h5>
+                                    <div class="card">
+                                        <div class="card-body bg-light">
+                                            <div class="row mb-3">
+                                                <div class="col-sm-3">
+                                                    <p class="mb-0 text-muted">Diagnosis</p>
+                                                </div>
+                                                <div class="col-sm-9">
+                                                    <p id="detail-diagnosis" class="mb-0">Healthy overall, slight tartar build-up on teeth.</p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-3">
+                                                    <p class="mb-0 text-muted">Prescription</p>
+                                                </div>
+                                                <div class="col-sm-9">
+                                                    <p id="detail-prescription" class="mb-0">Dental treats for tartar control.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="no-diagnosis-content" class="text-center py-3 d-none">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <p class="mb-3 text-muted">No diagnosis or prescription available yet.</p>
+                                            <button id="add-diagnosis-btn" class="btn btn-primary">
+                                                <i class="fas fa-stethoscope me-1"></i> Add Diagnosis & Prescription
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Update Diagnosis Modal -->
+    <div class="modal fade" id="diagnosisModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Update Diagnosis & Prescription</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="diagnosis-form">
+                        <input type="hidden" id="appointment-id">
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p><strong>Pet:</strong> <span id="modal-pet-name"></span></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Owner:</strong> <span id="modal-owner-name"></span></p>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p><strong>Date:</strong> <span id="modal-date"></span></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Type:</strong> <span id="modal-type"></span></p>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <p><strong>Notes:</strong> <span id="modal-notes"></span></p>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="diagnosis-input" class="form-label">Diagnosis</label>
+                            <textarea class="form-control" id="diagnosis-input" rows="3" required></textarea>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="prescription-input" class="form-label">Prescription</label>
+                            <textarea class="form-control" id="prescription-input" rows="3"></textarea>
+                            <div class="form-text">Leave empty if no medications are prescribed.</div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="save-diagnosis-btn">Save & Complete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-4 border-top">
+        <div class="container text-center">
+            <p class="mb-0">&copy; 2025 Cosmos Pet Care</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Flatpickr -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <!-- Custom JS -->
+    <script src="../js/main.js"></script>
+    <script>
+        let allAppointments = [];
+        let currentAppointmentId = null;
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is logged in and has vet role
+            if (!AUTH.isLoggedIn() || AUTH.getRole() !== 'vet') {
+                window.location.href = '../login.html';
+                return;
+            }
+            
+            // Update user name in UI
+            document.querySelectorAll('.user-name').forEach(el => {
+                el.textContent = AUTH.user.name;
+            });
+            
+            // Check URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            if (urlParams.get('id')) {
+                // Show appointment details
+                loadAppointmentDetails(urlParams.get('id'));
+            } else {
+                // Load appointments list
+                loadAppointments();
+            }
+            
+            // Event handlers
+            document.querySelector('.logout-btn').addEventListener('click', function(e) {
+                e.preventDefault();
+                AUTH.clearAuth();
+                window.location.href = '../login.html';
+            });
+            
+            // Tab change handlers
+            document.querySelectorAll('[data-bs-toggle="tab"]').forEach(tab => {
+                tab.addEventListener('shown.bs.tab', function(e) {
+                    if (e.target.id === 'pending-tab') {
+                        displayAppointments('pending');
+                    } else if (e.target.id === 'upcoming-tab') {
+                        displayAppointments('upcoming');
+                    } else if (e.target.id === 'completed-tab') {
+                        displayAppointments('completed');
+                    } else if (e.target.id === 'all-tab') {
+                        displayAppointments('all');
+                    }
+                });
+            });
+            
+            // Navigation handlers
+            document.getElementById('back-from-details').addEventListener('click', showAppointmentsListView);
+            
+            // Diagnosis form submission
+            document.getElementById('save-diagnosis-btn').addEventListener('click', updateDiagnosis);
+            document.getElementById('add-diagnosis-btn').addEventListener('click', function() {
+                if (currentAppointmentId) {
+                    showDiagnosisModal(currentAppointmentId);
+                }
+            });
+        });
+        
+        async function loadAppointments() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/appointments_get.php?vet_id=${AUTH.user.id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${AUTH.token}`
+                    }
+                });
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    allAppointments = result.data.appointments;
+                    
+                    // Display in appropriate tabs
+                    displayAppointments('pending');
+                    // Other tabs will be loaded when clicked
+                } else {
+                    const noAppointmentsMessage = 
+                        `<tr>
+                            <td colspan="6" class="text-center py-3">
+                                <p class="mb-0">No appointments found.</p>
+                            </td>
+                        </tr>`;
+                    
+                    document.getElementById('pending-appointments').innerHTML = noAppointmentsMessage;
+                    document.getElementById('upcoming-appointments').innerHTML = noAppointmentsMessage;
+                    document.getElementById('completed-appointments').innerHTML = noAppointmentsMessage;
+                    document.getElementById('all-appointments').innerHTML = noAppointmentsMessage;
+                }
+            } catch (error) {
+                console.error('Error loading appointments:', error);
+                UTILS.showAlert('Error loading appointments. Please try again.', 'danger');
+            }
+        }
+        
+        function displayAppointments(type) {
+            if (!allAppointments || allAppointments.length === 0) {
+                return; // Already handled in loadAppointments
+            }
+            
+            const now = new Date();
+            let appointments;
+            let targetElement;
+            
+            if (type === 'pending') {
+                appointments = allAppointments.filter(appointment => {
+                    return appointment.status === 'pending';
+                });
+                targetElement = 'pending-appointments';
+            } else if (type === 'upcoming') {
+                appointments = allAppointments.filter(appointment => {
+                    return new Date(appointment.date) >= now && appointment.status !== 'pending' && appointment.status !== 'cancelled';
+                });
+                targetElement = 'upcoming-appointments';
+            } else if (type === 'completed') {
+                appointments = allAppointments.filter(appointment => {
+                    return appointment.status === 'completed';
+                });
+                targetElement = 'completed-appointments';
+            } else {
+                appointments = allAppointments;
+                targetElement = 'all-appointments';
+            }
+            
+            if (appointments.length === 0) {
+                document.getElementById(targetElement).innerHTML = 
+                    `<tr>
+                        <td colspan="6" class="text-center py-3">
+                            <p class="mb-0">No ${type} appointments found.</p>
+                        </td>
+                    </tr>`;
+                return;
+            }
+            
+            let appointmentsHtml = '';
+            
+            appointments.forEach(appointment => {
+                // Status badge
+                const statusClass = appointment.status === 'pending' ? 'badge-pending' :
+                                   appointment.status === 'confirmed' ? 'badge-confirmed' :
+                                   appointment.status === 'completed' ? 'badge-completed' :
+                                   'badge-cancelled';
+                
+                // Format date
+                const appointmentDate = new Date(appointment.date);
+                const formattedDate = appointmentDate.toLocaleDateString() + ' ' + 
+                                     appointmentDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                
+                let actionButton = '';
+                if (appointment.status === 'pending') {
+                    actionButton = `
+                    <button class="btn btn-sm btn-primary diagnose-btn" data-id="${appointment.id}">
+                        <i class="fas fa-stethoscope me-1"></i> Diagnose
+                    </button>`;
+                } else {
+                    actionButton = `
+                    <button class="btn btn-sm btn-outline-primary view-btn" data-id="${appointment.id}">
+                        <i class="fas fa-eye me-1"></i> View
+                    </button>`;
+                }
+                
+                appointmentsHtml += `
+                <tr>
+                    <td>${appointment.pet_name} (${appointment.pet_type || 'Unknown'})</td>
+                    <td>${appointment.owner_name}</td>
+                    <td>${formattedDate}</td>
+                    <td>${appointment.type || appointment.reason}</td>
+                    <td><span class="badge ${statusClass}">${appointment.status}</span></td>
+                    <td>${actionButton}</td>
+                </tr>`;
+            });
+            
+            document.getElementById(targetElement).innerHTML = appointmentsHtml;
+            
+            // Add event listeners to buttons
+            document.querySelectorAll('.diagnose-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const appointmentId = this.getAttribute('data-id');
+                    showDiagnosisModal(appointmentId);
+                });
+            });
+            
+            document.querySelectorAll('.view-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const appointmentId = this.getAttribute('data-id');
+                    window.location.href = `appointments.html?id=${appointmentId}`;
+                });
+            });
+        }
+        
+        async function loadAppointmentDetails(appointmentId) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/appointments_get.php?id=${appointmentId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${AUTH.token}`
+                    }
+                });
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    const appointment = result.data.appointment;
+                    currentAppointmentId = appointment.id;
+                    
+                    // Update appointment details in UI
+                    document.getElementById('detail-pet-name').textContent = `${appointment.pet_name} (${appointment.pet_type}, ${appointment.pet_breed})`;
+                    document.getElementById('detail-owner-name').textContent = appointment.owner_name;
+                    
+                    // Format date
+                    const appointmentDate = new Date(appointment.date);
+                    const formattedDate = appointmentDate.toLocaleDateString() + ' ' + 
+                                         appointmentDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                    document.getElementById('detail-date').textContent = formattedDate;
+                    
+                    document.getElementById('detail-type').textContent = appointment.type || appointment.reason;
+                    
+                    // Status badge
+                    const statusClass = appointment.status === 'pending' ? 'badge-pending' :
+                                       appointment.status === 'confirmed' ? 'badge-confirmed' :
+                                       appointment.status === 'completed' ? 'badge-completed' :
+                                       'badge-cancelled';
+                    document.getElementById('detail-status').className = `badge ${statusClass}`;
+                    document.getElementById('detail-status').textContent = appointment.status;
+                    
+                    document.getElementById('detail-notes').textContent = appointment.notes || 'No notes provided';
+                    
+                    // Handle diagnosis and prescription display
+                    if (appointment.diagnosis) {
+                        document.getElementById('detail-diagnosis').textContent = appointment.diagnosis;
+                        document.getElementById('detail-prescription').textContent = appointment.prescription || 'None';
+                        document.getElementById('diagnosis-content').classList.remove('d-none');
+                        document.getElementById('no-diagnosis-content').classList.add('d-none');
+                    } else {
+                        document.getElementById('diagnosis-content').classList.add('d-none');
+                        document.getElementById('no-diagnosis-content').classList.remove('d-none');
+                    }
+                    
+                    // Show appointment details view
+                    showAppointmentDetailsView();
+                } else {
+                    UTILS.showAlert('Appointment not found', 'danger');
+                    showAppointmentsListView(); // Fallback to list view
+                }
+            } catch (error) {
+                console.error('Error loading appointment details:', error);
+                UTILS.showAlert('Error loading appointment details. Please try again.', 'danger');
+            }
+        }
+        
+        function showAppointmentsListView() {
+            document.getElementById('appointments-list-view').classList.remove('d-none');
+            document.getElementById('appointment-details-view').classList.add('d-none');
+            
+            // Update URL without reloading page
+            history.pushState({}, '', 'appointments.html');
+            
+            // Reload appointments in case there were changes
+            loadAppointments();
+        }
+        
+        function showAppointmentDetailsView() {
+            document.getElementById('appointments-list-view').classList.add('d-none');
+            document.getElementById('appointment-details-view').classList.remove('d-none');
+        }
+        
+        async function showDiagnosisModal(appointmentId) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/appointments_get.php?id=${appointmentId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${AUTH.token}`
+                    }
+                });
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    const appointment = result.data.appointment;
+                    
+                    // Populate modal with appointment details
+                    document.getElementById('appointment-id').value = appointment.id;
+                    document.getElementById('modal-pet-name').textContent = `${appointment.pet_name} (${appointment.pet_type}, ${appointment.pet_breed})`;
+                    document.getElementById('modal-owner-name').textContent = appointment.owner_name;
+                    
+                    // Format date
+                    const appointmentDate = new Date(appointment.date);
+                    const formattedDate = appointmentDate.toLocaleDateString() + ' ' + 
+                                        appointmentDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                    document.getElementById('modal-date').textContent = formattedDate;
+                    
+                    document.getElementById('modal-type').textContent = appointment.type || appointment.reason;
+                    document.getElementById('modal-notes').textContent = appointment.notes || 'No notes provided';
+                    
+                    // Clear previous inputs
+                    document.getElementById('diagnosis-input').value = '';
+                    document.getElementById('prescription-input').value = '';
+                    
+                    // Show modal
+                    new bootstrap.Modal(document.getElementById('diagnosisModal')).show();
+                } else {
+                    UTILS.showAlert('Appointment not found', 'danger');
+                }
+            } catch (error) {
+                console.error('Error loading appointment details:', error);
+                UTILS.showAlert('Error loading appointment details. Please try again.', 'danger');
+            }
+        }
+        
+        async function updateDiagnosis() {
+            const appointmentId = document.getElementById('appointment-id').value;
+            const diagnosis = document.getElementById('diagnosis-input').value;
+            const prescription = document.getElementById('prescription-input').value;
+            
+            if (!diagnosis) {
+                UTILS.showAlert('Please provide a diagnosis', 'danger', '#diagnosisModal .modal-body');
+                return;
+            }
+            
+            try {
+                // Show loading state
+                const saveBtn = document.getElementById('save-diagnosis-btn');
+                const originalBtnText = saveBtn.innerHTML;
+                saveBtn.innerHTML = '<span class="loading-spinner"></span> Saving...';
+                saveBtn.disabled = true;
+                
+                // Submit diagnosis data
+                const response = await fetch(`${API_BASE_URL}/appointments_update.php`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${AUTH.token}`
+                    },
+                    body: JSON.stringify({
+                        appointment_id: appointmentId,
+                        diagnosis: diagnosis,
+                        prescription: prescription
+                    })
+                });
+                
+                const result = await response.json();
+                
+                // Reset button
+                saveBtn.innerHTML = originalBtnText;
+                saveBtn.disabled = false;
+                
+                if (result.status === 'success') {
+                    // Show success message
+                    UTILS.showAlert('Diagnosis updated successfully!', 'success');
+                    
+                    // Hide modal
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('diagnosisModal'));
+                    modal.hide();
+                    
+                    // Reload appointment details if we're on the details view
+                    if (!document.getElementById('appointment-details-view').classList.contains('d-none')) {
+                        loadAppointmentDetails(appointmentId);
+                    } else {
+                        // Otherwise reload the appointment list
+                        loadAppointments();
+                    }
+                } else {
+                    // Show error message
+                    UTILS.showAlert(result.message || 'Failed to update diagnosis', 'danger', '#diagnosisModal .modal-body');
+                }
+            } catch (error) {
+                console.error('Error updating diagnosis:', error);
+                UTILS.showAlert('Error updating diagnosis. Please try again.', 'danger', '#diagnosisModal .modal-body');
+                
+                // Reset button
+                const saveBtn = document.getElementById('save-diagnosis-btn');
+                saveBtn.innerHTML = 'Save & Complete';
+                saveBtn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>
