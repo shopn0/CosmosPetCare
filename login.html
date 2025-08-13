@@ -149,6 +149,24 @@
             margin-right: 10px;
             font-size: 28px;
         }
+
+        /* Password validation styles */
+        #password-validation {
+            margin-top: 10px;
+            padding-left: 20px;
+        }
+        
+        #password-validation li {
+            margin-bottom: 5px;
+        }
+        
+        .text-success {
+            color: #28a745 !important;
+        }
+        
+        .text-danger {
+            color: #dc3545 !important;
+        }
     </style>
 </head>
 <body>
@@ -286,6 +304,17 @@
                             <div class="mb-4">
                                 <label for="register-address" class="form-label">Address</label>
                                 <textarea class="form-control" id="register-address" rows="2" placeholder="Your address" required></textarea>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="password-validation" class="form-label">Password Conditions</label>
+                                <ul id="password-validation" class="list-unstyled">
+                                    <li id="length" class="text-danger">✅ Minimum 6 characters</li>
+                                    <li id="uppercase" class="text-danger">✅ At least one uppercase letter</li>
+                                    <li id="lowercase" class="text-danger">✅ At least one lowercase letter</li>
+                                    <li id="number" class="text-danger">✅ At least one number</li>
+                                    <li id="special" class="text-danger">✅ At least one special character</li>
+                                </ul>
                             </div>
                             
                             <div class="form-check mb-4">
@@ -433,6 +462,31 @@
                     submitBtn.innerHTML = originalBtnText;
                     submitBtn.disabled = false;
                 }
+            });
+            
+            // Password validation
+            document.getElementById('register-password').addEventListener('input', function() {
+                const password = this.value;
+
+                // Validate length
+                document.getElementById('length').classList.toggle('text-success', password.length >= 6);
+                document.getElementById('length').classList.toggle('text-danger', password.length < 6);
+
+                // Validate uppercase
+                document.getElementById('uppercase').classList.toggle('text-success', /[A-Z]/.test(password));
+                document.getElementById('uppercase').classList.toggle('text-danger', !/[A-Z]/.test(password));
+
+                // Validate lowercase
+                document.getElementById('lowercase').classList.toggle('text-success', /[a-z]/.test(password));
+                document.getElementById('lowercase').classList.toggle('text-danger', !/[a-z]/.test(password));
+
+                // Validate number
+                document.getElementById('number').classList.toggle('text-success', /[0-9]/.test(password));
+                document.getElementById('number').classList.toggle('text-danger', !/[0-9]/.test(password));
+
+                // Validate special character
+                document.getElementById('special').classList.toggle('text-success', /[!@#$%^&*(),.?":{}|<>]/.test(password));
+                document.getElementById('special').classList.toggle('text-danger', !/[!@#$%^&*(),.?":{}|<>]/.test(password));
             });
         });
     </script>
